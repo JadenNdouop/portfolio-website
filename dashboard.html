@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ora</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='10' fill='%232B2C30'/><circle cx='16' cy='16' r='7' fill='none' stroke='white' stroke-width='2.5'/><line x1='16' y1='4' x2='16' y2='8' stroke='white' stroke-width='2.5' stroke-linecap='round'/><line x1='16' y1='24' x2='16' y2='28' stroke='white' stroke-width='2.5' stroke-linecap='round'/><line x1='4' y1='16' x2='8' y2='16' stroke='white' stroke-width='2.5' stroke-linecap='round'/><line x1='24' y1='16' x2='28' y2='16' stroke='white' stroke-width='2.5' stroke-linecap='round'/></svg>">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;background:#F2EAE0;color:#0F172A;height:100vh;display:flex;flex-direction:column;overflow:hidden;font-size:14px;user-select:none;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;background:#F2EAE0;color:#0F172A;height:100vh;display:flex;flex-direction:row;overflow:hidden;font-size:14px;user-select:none;padding:14px 16px;gap:10px;}
 
 /* ── LOCK ── */
 #lock{position:fixed;inset:0;background:#F2EAE0;z-index:9999;display:flex;align-items:center;justify-content:center;}
@@ -23,8 +24,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .lock-btn:hover{background:#1A1B1E;}
 .lock-err{font-size:12px;color:#EF4444;display:none;}
 
+/* ── SIDEBAR ── */
+.sidebar{width:210px;flex-shrink:0;display:flex;flex-direction:column;padding:6px 0 6px 2px;overflow:hidden;background:rgba(255,255,255,.28);border-radius:16px;border:1px solid rgba(120,100,80,.09);box-shadow:0 1px 3px rgba(100,80,60,.04),0 4px 14px rgba(100,80,60,.05);}
+.sb-logo{font-size:18px;font-weight:800;color:#0F172A;letter-spacing:-.5px;padding:6px 12px 18px;}
+.sb-logo span{font-weight:400;color:#94A3B8;font-size:16px;}
+.sb-nav{display:flex;flex-direction:column;gap:3px;padding:0 8px;}
+.sb-nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:13px;font-weight:600;color:#5A5A54;cursor:pointer;transition:background .1s;}
+.sb-nav-item:hover{background:rgba(255,255,255,.5);}
+.sb-nav-item.active{background:#FBF7F2;color:#0F172A;box-shadow:0 1px 3px rgba(100,80,60,.08),0 1px 8px rgba(100,80,60,.05);border:1px solid rgba(120,100,80,.09);}
+.sb-nav-icon{font-size:17px;flex-shrink:0;line-height:1;}
+.sb-divider{height:1px;background:rgba(120,100,80,.1);margin:14px 8px;}
+.sb-mini-cal{display:flex;flex-direction:column;gap:8px;padding:0 8px;}
+.sb-cal-header{display:flex;align-items:center;justify-content:space-between;padding:0 4px;}
+.sb-cal-month{font-size:12px;font-weight:700;color:#0F172A;}
+.sb-cal-nav{display:flex;gap:0;}
+.sb-cal-nav button{background:none;border:none;font-size:14px;color:#94A3B8;cursor:pointer;padding:0 3px;line-height:1;}
+.sb-cal-nav button:hover{color:#2B2C30;}
+.sb-cal-days{display:grid;grid-template-columns:repeat(7,1fr);}
+.sb-cal-dow{font-size:9px;font-weight:600;color:#C4C9D4;text-align:center;padding:2px 0 4px;}
+.sb-cal-dates{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;}
+.sb-cal-date{font-size:10px;color:#64748B;text-align:center;padding:4px 2px;border-radius:50%;cursor:pointer;line-height:1.3;width:24px;margin:0 auto;}
+.sb-cal-date:hover{background:#EDE5DB;color:#0F172A;}
+.sb-cal-date.today{background:#2B2C30;color:#fff;font-weight:700;}
+.sb-cal-date.has-ev{font-weight:700;color:#0F172A;position:relative;}
+.sb-cal-date.has-ev:not(.today)::after{content:'';display:block;width:3px;height:3px;border-radius:50%;background:#94A3B8;margin:-1px auto 0;}
+.sb-spacer{flex:1;}
+.sb-bottom{display:flex;align-items:center;gap:9px;padding:10px 12px;cursor:pointer;border-radius:10px;margin:0 8px 4px;}
+.sb-bottom:hover{background:rgba(255,255,255,.5);}
+.sb-avatar{width:30px;height:30px;border-radius:50%;background:#2B2C30;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:.5px;}
+.sb-username{font-size:12.5px;font-weight:600;color:#0F172A;flex:1;}
+
 /* ── LAYOUT ── */
-.layout{flex:1;display:flex;flex-direction:column;gap:10px;padding:14px 16px;overflow:hidden;}
+.layout{flex:1;display:flex;flex-direction:column;gap:10px;overflow:hidden;min-width:0;}
 
 /* ── TOPBAR CARD ── */
 .topbar{background:#FBF7F2;border-radius:14px;border:1px solid rgba(120,100,80,.09);box-shadow:0 1px 3px rgba(100,80,60,.05),0 4px 12px rgba(100,80,60,.04);padding:10px 18px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
@@ -65,7 +96,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .cal-card{background:#FBF7F2;border-radius:16px;border:1px solid rgba(120,100,80,.09);box-shadow:0 1px 3px rgba(100,80,60,.05),0 4px 20px rgba(100,80,60,.06);flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
 .day-header{display:flex;flex-shrink:0;border-bottom:1px solid rgba(120,100,80,.08);}
 .dh-gutter{width:54px;flex-shrink:0;}
-.day-cols-header{flex:1;display:grid;grid-template-columns:repeat(7,1fr);}
+.day-cols-header{flex:1;display:grid;grid-template-columns:repeat(4,1fr);}
 .dh-cell{padding:10px 4px 8px;text-align:center;border-left:1px solid #F5F7FA;}
 .dh-cell:first-child{border-left:none;}
 .dh-dow{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#C4C9D4;}
@@ -74,7 +105,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .cal-body{flex:1;display:flex;overflow-y:auto;min-height:0;}
 .time-gutter{width:54px;flex-shrink:0;position:relative;}
 .time-label{position:absolute;right:10px;font-size:9.5px;font-weight:600;color:#C8CDD6;transform:translateY(-50%);white-space:nowrap;}
-.day-cols{flex:1;display:grid;grid-template-columns:repeat(7,1fr);position:relative;}
+.day-cols{flex:1;display:grid;grid-template-columns:repeat(4,1fr);position:relative;}
 .day-col{border-left:1px solid rgba(120,100,80,.06);position:relative;cursor:crosshair;}
 .day-col:first-child{border-left:none;}
 .gridline{position:absolute;left:0;right:0;border-top:1px solid rgba(120,100,80,.06);pointer-events:none;}
@@ -99,9 +130,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 /* drag ghost */
 #drag-ghost{position:fixed;pointer-events:none;z-index:9000;border-radius:9px;padding:6px 8px;font-size:11px;font-weight:700;border:1.5px solid transparent;opacity:.85;display:none;}
 
-/* ── BOTTOM STRIP ── */
-.bottom-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex-shrink:0;height:138px;}
-.panel{background:#FBF7F2;border-radius:14px;border:1px solid rgba(120,100,80,.09);box-shadow:0 1px 3px rgba(100,80,60,.05),0 4px 12px rgba(100,80,60,.04);padding:15px 16px;display:flex;flex-direction:column;overflow:hidden;}
+/* ── RIGHT PANEL ── */
+.right-panel{width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;overflow:hidden;transition:width .25s cubic-bezier(.4,0,.2,1),opacity .2s;}
+.right-panel.collapsed{width:0;opacity:0;pointer-events:none;}
+.panel{background:#FBF7F2;border-radius:14px;border:1px solid rgba(120,100,80,.09);box-shadow:0 1px 3px rgba(100,80,60,.05),0 4px 12px rgba(100,80,60,.04);padding:15px 16px;display:flex;flex-direction:column;overflow:hidden;flex:1;}
+
+/* ── COLLAPSE BUTTONS ── */
+.sidebar{position:relative;transition:width .25s cubic-bezier(.4,0,.2,1);overflow:visible !important;}
+.sidebar.collapsed{width:0;}
+.sidebar.collapsed .sb-logo,.sidebar.collapsed .sb-nav,.sidebar.collapsed .sb-divider,.sidebar.collapsed .sb-mini-cal,.sidebar.collapsed .sb-spacer,.sidebar.collapsed .sb-bottom{opacity:0;pointer-events:none;}
+.right-panel{position:relative;overflow:visible !important;}
+.right-panel.collapsed{width:0;}
+.right-panel.collapsed .panel{opacity:0;pointer-events:none;}
+.collapse-btn{position:absolute;top:50%;transform:translateY(-50%);width:20px;height:36px;border-radius:6px;background:#FBF7F2;border:1px solid rgba(120,100,80,.12);box-shadow:0 1px 4px rgba(100,80,60,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;color:#94A3B8;z-index:200;transition:background .1s,color .1s;}
+.collapse-btn:hover{background:#EDE5DB;color:#2B2C30;}
+.sb-collapse{right:-10px;}
+.rp-collapse{left:-10px;}
+.layout{position:relative;}
+/* restore buttons — fixed, always visible when collapsed */
+.restore-btn{position:fixed;top:50%;transform:translateY(-50%);width:22px;height:40px;border-radius:0 7px 7px 0;background:#FBF7F2;border:1px solid rgba(120,100,80,.14);border-left:none;box-shadow:2px 0 8px rgba(100,80,60,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:#94A3B8;z-index:300;transition:background .1s,color .1s;}
+.restore-btn:hover{background:#EDE5DB;color:#2B2C30;}
+.restore-left{left:0;border-radius:0 7px 7px 0;border-left:none;}
+.restore-right{right:0;border-radius:7px 0 0 7px;border-right:none;box-shadow:-2px 0 8px rgba(100,80,60,.1);}
 .panel-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#B8C0CC;margin-bottom:10px;flex-shrink:0;}
 .panel-body{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:5px;}
 
@@ -162,14 +212,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .qm-save:hover{background:#1A1B1E;}
 
 /* ── EVENT POPUP ── */
-#ev-popup{position:fixed;z-index:8500;background:#fff;border:1px solid #E8EAF0;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.1);padding:15px 16px;width:230px;display:none;}
+#ev-popup{position:fixed;z-index:8500;background:#fff;border:1px solid #E8EAF0;border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);padding:18px;width:280px;display:none;}
 #ev-popup.open{display:block;}
-.ep-title{font-size:13.5px;font-weight:700;color:#0F172A;margin-bottom:3px;line-height:1.3;}
-.ep-time{font-size:11px;color:#64748B;margin-bottom:8px;}
-.ep-cat{display:inline-block;font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px;margin-bottom:11px;}
+.ep-cat{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase;}
+.ep-title{font-size:15px;font-weight:700;color:#0F172A;margin-bottom:4px;line-height:1.3;}
+.ep-time{font-size:11.5px;color:#64748B;margin-bottom:10px;display:flex;align-items:center;gap:4px;}
+.ep-detail{display:flex;align-items:flex-start;gap:7px;margin-bottom:7px;}
+.ep-detail-icon{font-size:13px;flex-shrink:0;margin-top:1px;}
+.ep-detail-text{font-size:12px;color:#475569;line-height:1.45;word-break:break-word;}
+.ep-divider{height:1px;background:#F1F5F9;margin:12px 0;}
 .ep-actions{display:flex;gap:7px;}
-.ep-edit-btn{flex:1;font-family:inherit;font-size:11.5px;font-weight:600;padding:6px;border-radius:7px;border:1px solid #E8EAF0;background:#fff;color:#475569;cursor:pointer;}
-.ep-del-btn{font-family:inherit;font-size:11.5px;font-weight:600;padding:6px 10px;border-radius:7px;border:none;background:#FEE2E2;color:#DC2626;cursor:pointer;}
+.ep-edit-btn{flex:1;font-family:inherit;font-size:12px;font-weight:600;padding:7px;border-radius:8px;border:1px solid #E8EAF0;background:#fff;color:#475569;cursor:pointer;transition:background .1s;}
+.ep-edit-btn:hover{background:#F8FAFC;}
+.ep-del-btn{font-family:inherit;font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;border:none;background:#FEE2E2;color:#DC2626;cursor:pointer;transition:background .1s;}
+.ep-del-btn:hover{background:#FECACA;}
+/* ── TEXTAREA ── */
+.qm-textarea{width:100%;padding:10px 13px;border:1.5px solid #EAECF0;border-radius:10px;font-family:inherit;font-size:13.5px;outline:none;margin-bottom:12px;color:#0F172A;transition:border-color .1s;resize:vertical;min-height:70px;line-height:1.5;}
+.qm-textarea:focus{border-color:#2B2C30;box-shadow:0 0 0 3px rgba(43,44,48,.08);}
 
 /* ── SETTINGS ── */
 #settings-panel{position:fixed;top:0;right:0;bottom:0;width:340px;background:#fff;border-left:1px solid #E8EAF0;z-index:7000;transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);padding:24px;overflow-y:auto;display:flex;flex-direction:column;gap:18px;}
@@ -248,6 +307,35 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
   </div>
 </div>
 
+<!-- SIDEBAR -->
+<div class="sidebar" id="left-sidebar">
+  <button class="collapse-btn sb-collapse" onclick="toggleLeftSidebar()" id="sb-collapse-btn" title="Collapse sidebar">‹</button>
+  <div class="sb-logo">Ora <span>beta</span></div>
+  <div class="sb-nav">
+    <div class="sb-nav-item active"><i class="ti ti-calendar-week sb-nav-icon"></i> Week</div>
+    <div class="sb-nav-item"><i class="ti ti-layout-list sb-nav-icon"></i> Agenda</div>
+    <div class="sb-nav-item"><i class="ti ti-checklist sb-nav-icon"></i> Tasks</div>
+    <div class="sb-nav-item"><i class="ti ti-flame sb-nav-icon"></i> Habits</div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-mini-cal">
+    <div class="sb-cal-header">
+      <span class="sb-cal-month" id="sb-month-label"></span>
+      <div class="sb-cal-nav">
+        <button onclick="sbCalShift(-1)">‹</button>
+        <button onclick="sbCalShift(1)">›</button>
+      </div>
+    </div>
+    <div class="sb-cal-days" id="sb-cal-days"></div>
+    <div class="sb-cal-dates" id="sb-cal-dates"></div>
+  </div>
+  <div class="sb-spacer"></div>
+  <div class="sb-bottom" onclick="openSettings()">
+    <div class="sb-avatar">JN</div>
+    <div class="sb-username">Jaden</div>
+  </div>
+</div>
+
 <!-- LAYOUT -->
 <div class="layout">
 
@@ -277,7 +365,6 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
       <div class="ai-dot" id="ai-dot"></div>
       <button class="voice-btn" id="voice-btn" onclick="toggleVoice()">🎙 <span id="voice-label">Speak</span></button>
       <button class="add-btn" onclick="openModal()">+ Add</button>
-      <button class="icon-btn" onclick="openSettings()">⚙️</button>
     </div>
   </div>
 
@@ -300,36 +387,50 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
     </div>
   </div>
 
-  <!-- BOTTOM STRIP -->
-  <div class="bottom-strip">
-    <div class="panel">
-      <div class="panel-label">Up next</div>
-      <div class="panel-body" id="panel-upnext"><div style="font-size:11px;color:#CBD5E1;">No upcoming events</div></div>
-    </div>
-    <div class="panel">
-      <div class="panel-label">This week</div>
-      <div class="panel-body" id="panel-week" style="flex-direction:row;"></div>
-    </div>
-    <div class="panel">
-      <div class="panel-label">Free today</div>
-      <div class="panel-body" id="panel-free"><div class="free-none">No gaps found</div></div>
-    </div>
-    <div class="panel">
-      <div class="panel-label">Weather</div>
-      <div class="panel-body" id="panel-weather"><div class="wx-loading">Fetching weather…</div></div>
-    </div>
-  </div>
-
 </div>
+
+<!-- RIGHT PANEL -->
+<div class="right-panel" id="right-panel">
+  <button class="collapse-btn rp-collapse" onclick="toggleRightPanel()" id="rp-collapse-btn" title="Collapse panel">›</button>
+  <div class="panel">
+    <div class="panel-label">Up next</div>
+    <div class="panel-body" id="panel-upnext"><div style="font-size:11px;color:#CBD5E1;">No upcoming events</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-label">This week</div>
+    <div class="panel-body" id="panel-week" style="flex-direction:row;"></div>
+  </div>
+  <div class="panel">
+    <div class="panel-label">Free today</div>
+    <div class="panel-body" id="panel-free"><div class="free-none">No gaps found</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-label">Weather</div>
+    <div class="panel-body" id="panel-weather"><div class="wx-loading">Fetching weather…</div></div>
+  </div>
+</div>
+
+<!-- SIDEBAR RESTORE BUTTONS (always mounted, shown only when collapsed) -->
+<button class="restore-btn restore-left" id="sb-restore" onclick="toggleLeftSidebar()" style="display:none;" title="Open sidebar">›</button>
+<button class="restore-btn restore-right" id="rp-restore" onclick="toggleRightPanel()" style="display:none;" title="Open panel">‹</button>
 
 <!-- DRAG GHOST -->
 <div id="drag-ghost"></div>
 
 <!-- EVENT POPUP -->
 <div id="ev-popup">
+  <div class="ep-cat" id="ep-cat"></div>
   <div class="ep-title" id="ep-title"></div>
   <div class="ep-time" id="ep-time"></div>
-  <div class="ep-cat" id="ep-cat"></div>
+  <div id="ep-location-row" class="ep-detail" style="display:none;">
+    <span class="ep-detail-icon">📍</span>
+    <span class="ep-detail-text" id="ep-location"></span>
+  </div>
+  <div id="ep-notes-row" class="ep-detail" style="display:none;">
+    <span class="ep-detail-icon">📝</span>
+    <span class="ep-detail-text" id="ep-notes"></span>
+  </div>
+  <div class="ep-divider"></div>
   <div class="ep-actions">
     <button class="ep-edit-btn" id="ep-edit">✏️ Edit</button>
     <button class="ep-del-btn" id="ep-del">Delete</button>
@@ -358,6 +459,10 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
     </div>
     <div class="qm-section-label">Category</div>
     <div class="qm-cats" id="qm-cats"></div>
+    <div class="qm-section-label">Location (optional)</div>
+    <input class="qm-input" id="qm-location" placeholder="📍 Add location" autocomplete="off">
+    <div class="qm-section-label">Notes (optional)</div>
+    <textarea class="qm-textarea" id="qm-notes" placeholder="Add notes or details…"></textarea>
     <div class="qm-actions">
       <button class="qm-cancel" onclick="closeModal()">Cancel</button>
       <button class="qm-save" onclick="saveModal()">Save event</button>
@@ -452,9 +557,11 @@ function uid(){return Math.random().toString(36).slice(2,10);}
 // ════════════════════════════════════════════════
 // DATE HELPERS
 // ════════════════════════════════════════════════
-function weekStart(off){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay()+off*7);return d;}
+function weekStart(off){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+off*4);return d;}
 function dateStr(d){return d.toISOString().split('T')[0];}
-function weekDates(off){const s=weekStart(off);return Array.from({length:7},(_,i)=>{const d=new Date(s);d.setDate(s.getDate()+i);return d;});}
+function weekDates(off){const s=weekStart(off);return Array.from({length:4},(_,i)=>{const d=new Date(s);d.setDate(s.getDate()+i);return d;});}
+// Always show actual current week (Sun–Sat) for the "this week" panel
+function currentWeekDates(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-d.getDay());return Array.from({length:7},(_,i)=>{const x=new Date(d);x.setDate(d.getDate()+i);return x;});}
 const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MFULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -467,8 +574,9 @@ function parseDayToDate(w){const t=new Date();t.setHours(0,0,0,0);w=w.toLowerCas
 // RENDER
 // ════════════════════════════════════════════════
 function render(){
+  renderSidebar();
   const dates=weekDates(weekOffset), today=dateStr(new Date());
-  const first=dates[0], last=dates[6];
+  const first=dates[0], last=dates[3];
   document.getElementById('tb-title').textContent=first.getMonth()===last.getMonth()?MFULL[first.getMonth()]+' '+first.getFullYear():MONTHS[first.getMonth()]+' – '+MONTHS[last.getMonth()]+' '+last.getFullYear();
 
   document.getElementById('day-cols-header').innerHTML=dates.map(d=>{
@@ -554,18 +662,17 @@ function updatePanels(){
     return`<div class="un-item"><div class="un-dot" style="background:${cat.border}"></div><div class="un-name">${e.title}</div><div class="un-time">${dateLabel}, ${fmt12(e.start)}</div></div>`;
   }).join('');}
 
-  // THIS WEEK
-  const dates=weekDates(weekOffset);
-  const todayDow=new Date().getDay();
+  // THIS WEEK (always show actual Sun–Sat week)
+  const cwDates=currentWeekDates();
   const weekEl=document.getElementById('panel-week');
-  const maxEvs=Math.max(1,...dates.map(d=>allEvs.filter(e=>e.date===dateStr(d)).length));
-  weekEl.innerHTML=`<div style="display:flex;align-items:flex-end;gap:4px;flex:1;width:100%;">${dates.map((d,i)=>{
+  const maxEvs=Math.max(1,...cwDates.map(d=>allEvs.filter(e=>e.date===dateStr(d)).length));
+  weekEl.innerHTML=`<div style="display:flex;align-items:flex-end;gap:4px;flex:1;width:100%;">${cwDates.map((d,i)=>{
     const ds=dateStr(d);
     const cnt=allEvs.filter(e=>e.date===ds).length;
     const isToday=ds===today;
     const h=cnt===0?4:Math.max(8,Math.round(cnt/maxEvs*52));
     return`<div class="wbar-wrap"><div class="wbar" style="height:${h}px;background:${isToday?'#2B2C30':cnt?'#C8C7BA':'#F1F5F9'};"></div><div class="wbar-lbl${isToday?' today':''}">${DAYS[d.getDay()].charAt(0)}</div></div>`;
-  }).join('')}</div><div class="week-stat">${allEvs.filter(e=>dates.some(d=>dateStr(d)===e.date)).length} events this week</div>`;
+  }).join('')}</div><div class="week-stat">${allEvs.filter(e=>cwDates.some(d=>dateStr(d)===e.date)).length} events this week</div>`;
 
   // FREE TODAY
   const todayEvs=allEvs.filter(e=>e.date===today).sort((a,b)=>a.start-b.start);
@@ -669,13 +776,17 @@ document.addEventListener('mouseup',e=>{
 // ════════════════════════════════════════════════
 function showPopup(ev,cx,cy){
   const cat=CAT[ev.cat]||CAT.work;
-  document.getElementById('ep-title').textContent=ev.title;
-  document.getElementById('ep-time').textContent=fmt12(ev.start)+(ev.end?' – '+fmt12(ev.end):'')+' · '+new Date(ev.date+'T12:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
   const catEl=document.getElementById('ep-cat');catEl.textContent=cat.label;catEl.style.cssText=`background:${cat.bg};color:${cat.text};`;
+  document.getElementById('ep-title').textContent=ev.title;
+  document.getElementById('ep-time').textContent='🕐 '+fmt12(ev.start)+(ev.end?' – '+fmt12(ev.end):'')+' · '+new Date(ev.date+'T12:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  const locRow=document.getElementById('ep-location-row'),locEl=document.getElementById('ep-location');
+  if(ev.location){locEl.textContent=ev.location;locRow.style.display='flex';}else{locRow.style.display='none';}
+  const notesRow=document.getElementById('ep-notes-row'),notesEl=document.getElementById('ep-notes');
+  if(ev.notes){notesEl.textContent=ev.notes;notesRow.style.display='flex';}else{notesRow.style.display='none';}
   document.getElementById('ep-del').onclick=()=>{closePopup();deleteEv(ev.id,{stopPropagation:()=>{}});};
   document.getElementById('ep-edit').onclick=()=>{closePopup();openModal(ev.date,ev.start,ev.end,ev.id);};
   const popup=document.getElementById('ev-popup');popup.classList.add('open');
-  const pw=230,ph=150;
+  const pw=280,ph=ev.location||ev.notes?220:170;
   let x=cx+10,y=cy-20;
   if(x+pw>window.innerWidth-10)x=cx-pw-10;
   if(y+ph>window.innerHeight-10)y=window.innerHeight-ph-10;
@@ -697,6 +808,8 @@ let editingId=null;
 function openModal(date,startMins,endMins,evId){
   editingId=evId||null;
   document.getElementById('qm-name').value='';
+  document.getElementById('qm-location').value='';
+  document.getElementById('qm-notes').value='';
   document.getElementById('qm-date').value=date||dateStr(new Date());
   document.getElementById('qm-start').value=mToI(startMins!=null?startMins:9*60);
   document.getElementById('qm-end').value=mToI(endMins!=null?endMins:10*60);
@@ -708,7 +821,7 @@ function openModal(date,startMins,endMins,evId){
   document.getElementById('qm-presets-wrap').style.display='block';
 
   // If editing, pre-fill
-  if(evId){const ev=events.find(x=>x.id===evId);if(ev){document.getElementById('qm-name').value=ev.title;selectedCat=ev.cat;document.getElementById('qm-start').value=mToI(ev.start);document.getElementById('qm-end').value=mToI(ev.end);}}
+  if(evId){const ev=events.find(x=>x.id===evId);if(ev){document.getElementById('qm-name').value=ev.title;selectedCat=ev.cat;document.getElementById('qm-start').value=mToI(ev.start);document.getElementById('qm-end').value=mToI(ev.end);document.getElementById('qm-location').value=ev.location||'';document.getElementById('qm-notes').value=ev.notes||'';}}
 
   document.getElementById('qm-cats').innerHTML=CAT_KEYS.map(k=>{
     const c=CAT[k];
@@ -742,10 +855,12 @@ function saveModal(){
   const date=document.getElementById('qm-date').value;
   const start=inputToM(document.getElementById('qm-start').value);
   const end=inputToM(document.getElementById('qm-end').value);
+  const location=document.getElementById('qm-location').value.trim();
+  const notes=document.getElementById('qm-notes').value.trim();
   if(editingId){
     const idx=events.findIndex(x=>x.id===editingId);
-    if(idx!==-1){events[idx]={...events[idx],title:name,date,start,end:end>start?end:start+60,cat:selectedCat};saveEvents();render();}
-  }else{addEvent({title:name,date,start,end:end>start?end:start+60,cat:selectedCat});}
+    if(idx!==-1){events[idx]={...events[idx],title:name,date,start,end:end>start?end:start+60,cat:selectedCat,location,notes};saveEvents();render();}
+  }else{addEvent({title:name,date,start,end:end>start?end:start+60,cat:selectedCat,location,notes});}
   closeModal();
 }
 document.getElementById('qm-name').addEventListener('keydown',e=>{if(e.key==='Enter')saveModal();});
@@ -755,6 +870,50 @@ document.getElementById('qm-name').addEventListener('keydown',e=>{if(e.key==='En
 // ════════════════════════════════════════════════
 function shiftWeek(n){weekOffset+=n;render();}
 function goToday(){weekOffset=0;render();}
+
+// ════════════════════════════════════════════════
+// SIDEBAR MINI CALENDAR
+// ════════════════════════════════════════════════
+let sbCalOffset=0;// months from current
+function renderSidebar(){
+  const now=new Date();
+  const base=new Date(now.getFullYear(),now.getMonth()+sbCalOffset,1);
+  const y=base.getFullYear(),m=base.getMonth();
+  document.getElementById('sb-month-label').textContent=base.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const firstDay=new Date(y,m,1).getDay();
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const todayD=now.getDate(),todayM=now.getMonth(),todayY=now.getFullYear();
+  const monthStr=String(y)+'-'+String(m+1).padStart(2,'0');
+  const datesWithEv=new Set(events.filter(e=>e.date.startsWith(monthStr)).map(e=>parseInt(e.date.slice(-2))));
+  const dowHtml=['S','M','T','W','T','F','S'].map(d=>`<div class="sb-cal-dow">${d}</div>`).join('');
+  document.getElementById('sb-cal-days').innerHTML=dowHtml;
+  let datesHtml='';
+  for(let i=0;i<firstDay;i++)datesHtml+='<div></div>';
+  for(let d=1;d<=daysInMonth;d++){
+    const isToday=d===todayD&&m===todayM&&y===todayY;
+    const hasEv=datesWithEv.has(d);
+    datesHtml+=`<div class="sb-cal-date${isToday?' today':''}${hasEv?' has-ev':''}" onclick="jumpToDate(${y},${m},${d})">${d}</div>`;
+  }
+  document.getElementById('sb-cal-dates').innerHTML=datesHtml;
+}
+function sbCalShift(n){sbCalOffset+=n;renderSidebar();}
+function jumpToDate(y,m,d){
+  const target=new Date(y,m,d);
+  const todayDate=new Date();todayDate.setHours(0,0,0,0);target.setHours(0,0,0,0);
+  const diffDays=Math.round((target-todayDate)/(24*60*60*1000));
+  weekOffset=Math.floor(diffDays/4);
+  render();
+}
+function toggleLeftSidebar(){
+  const sb=document.getElementById('left-sidebar');
+  const collapsed=sb.classList.toggle('collapsed');
+  document.getElementById('sb-restore').style.display=collapsed?'flex':'none';
+}
+function toggleRightPanel(){
+  const rp=document.getElementById('right-panel');
+  const collapsed=rp.classList.toggle('collapsed');
+  document.getElementById('rp-restore').style.display=collapsed?'flex':'none';
+}
 function tick(){const n=new Date(),h=n.getHours(),m=n.getMinutes();document.getElementById('tb-clock').textContent=`${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`;}
 setInterval(tick,5000);tick();
 
