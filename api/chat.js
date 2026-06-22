@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY not set in Vercel env vars' });
   }
 
-  const { message, today, time, dayOfWeek, userEvents = [], calendarEvents = [] } = req.body;
+  const { message, today, time, dayOfWeek, userEvents = [], calendarEvents = [], templates = [] } = req.body;
 
   const fmtEv = arr => arr.length === 0 ? 'None' : arr.map(e =>
     `- ${e.title}: ${e.date} ${minsToStr(e.start)}–${minsToStr(e.end)}`
@@ -24,7 +24,15 @@ export default async function handler(req, res) {
     return `${h % 12 || 12}:${String(min).padStart(2,'0')} ${h >= 12 ? 'PM' : 'AM'}`;
   }
 
-  const system = `You are a smart personal scheduling assistant embedded in a week-view calendar dashboard.
+  const fmtTemplates = templates.length === 0
+    ? 'None saved.'
+    : templates.map(t => {
+        const h = Math.floor(t.dur / 60), m = t.dur % 60;
+        const dur = h && m ? `${h}h ${m}m` : h ? `${h}h` : `${m}m`;
+        return `- trigger "${t.alias}" → title: "${t.title}", category: ${t.cat}, duration: ${dur}`;
+      }).join('\n');
+
+  const system = `You are a smart personal scheduling assistant embedded in a week-view calendar dashboard called Ora.
 
 Today is ${dayOfWeek}, ${today}. Current time is ${time}.
 
@@ -33,6 +41,10 @@ ${fmtEv(calendarEvents)}
 
 USER'S EXISTING DASHBOARD EVENTS:
 ${fmtEv(userEvents)}
+
+USER'S SAVED EVENT TEMPLATES:
+${fmtTemplates}
+When the user says something that matches a template trigger (e.g. "gym", "study block"), ALWAYS use the saved title and category from the template. Use the saved duration unless the user specifies a different one.
 
 When the user speaks naturally about their day, extract all schedulable items and return them as JSON.
 
@@ -44,6 +56,7 @@ Rules:
 - Respect durations: "an hour and a half" = 90 minutes, "a couple hours" = 120 minutes
 - Do NOT re-add events already in the calendar — only new ones
 - If the user is just greeting or asking something (not scheduling), return an empty events array and respond conversationally
+- PAST TIME CHECK: If the user asks to schedule something today at a time that has already passed (e.g. it's 2 PM and they say "add gym at 11 AM"), do NOT silently add it. Instead set "events" to an empty array and use the "message" to flag it naturally — e.g. "Hey, 11 AM has already passed — did you mean tomorrow, or want me to pick a time later today?" Then wait for clarification.
 
 Respond ONLY with valid JSON, no prose outside the JSON:
 {
