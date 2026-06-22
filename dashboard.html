@@ -84,20 +84,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .now-bar{flex:1;height:1.5px;background:#EF4444;}
 
 /* events */
-.ev{position:absolute;left:2px;right:2px;border-radius:8px;padding:5px 8px;overflow:hidden;z-index:10;border-left:3px solid transparent;cursor:pointer;transition:box-shadow .15s,transform .15s;}
-.ev:hover{box-shadow:0 2px 12px rgba(0,0,0,.12);transform:translateX(1px);}
+.ev{position:absolute;left:2px;right:2px;border-radius:9px;padding:6px 8px;overflow:hidden;z-index:10;border:1.5px solid transparent;cursor:pointer;transition:box-shadow .15s,transform .15s;}
+.ev:hover{box-shadow:0 3px 14px rgba(0,0,0,.13);transform:scale(1.01);}
 .ev.dragging{opacity:.4;pointer-events:none;}
-.ev-title{font-size:11px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ev-time{font-size:9.5px;margin-top:1px;opacity:.6;}
-.ev-del{position:absolute;top:3px;right:4px;font-size:10px;color:rgba(0,0,0,.25);display:none;cursor:pointer;background:rgba(255,255,255,.7);border-radius:3px;padding:1px 3px;}
+.ev-title{font-size:11.5px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ev-time{font-size:10px;margin-top:2px;opacity:.65;}
+.ev-del{position:absolute;top:4px;right:5px;font-size:10px;color:rgba(0,0,0,.2);display:none;cursor:pointer;background:rgba(255,255,255,.8);border-radius:4px;padding:1px 4px;}
 .ev:hover .ev-del{display:block;}
-.ev-synced{position:absolute;left:2px;right:2px;border-radius:7px;padding:5px 7px;overflow:hidden;z-index:8;background:rgba(248,250,252,.95);border-left:3px solid #CBD5E1;border-top:1px dashed #E8EAF0;border-right:1px dashed #E8EAF0;border-bottom:1px dashed #E8EAF0;}
-.ev-synced .ev-title{font-size:10.5px;color:#64748B;}
-.ev-synced .ev-time{font-size:9px;color:#94A3B8;}
-.ev-synced-src{font-size:8px;color:#B8C0CC;margin-top:2px;}
+.ev-synced{position:absolute;left:2px;right:2px;border-radius:9px;padding:5px 8px;overflow:hidden;z-index:8;background:#F8F6F2;border:1.5px dashed #C8C4BC;}
+.ev-synced .ev-title{font-size:10.5px;color:#7A7570;}
+.ev-synced .ev-time{font-size:9px;color:#A8A49E;}
+.ev-synced-src{font-size:8px;color:#B8B4AE;margin-top:2px;}
 
 /* drag ghost */
-#drag-ghost{position:fixed;pointer-events:none;z-index:9000;border-radius:7px;padding:5px 7px;font-size:11px;font-weight:700;border-left:3px solid transparent;opacity:.8;display:none;}
+#drag-ghost{position:fixed;pointer-events:none;z-index:9000;border-radius:9px;padding:6px 8px;font-size:11px;font-weight:700;border:1.5px solid transparent;opacity:.85;display:none;}
 
 /* ── BOTTOM STRIP ── */
 .bottom-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex-shrink:0;height:138px;}
@@ -426,7 +426,7 @@ const QUICK_PRESETS = [
   { label:'☕ Break', cat:'personal', dur:30, name:'Break' },
 ];
 
-const H_START = 6, H_END = 23, PX_H = 62;
+const H_START = 0, H_END = 23, PX_H = 62;
 
 // ════════════════════════════════════════════════
 // LOCK
@@ -617,7 +617,7 @@ function buildEventEl(ev){
   const top=Math.max(0,(ev.start-H_START*60))/60*PX_H;
   const height=Math.max(20,(ev.end-ev.start)/60*PX_H-2);
   const el=document.createElement('div');el.className='ev';el.dataset.id=ev.id;
-  el.style.cssText=`top:${top}px;height:${height}px;background:${cat.bg};border-left-color:${cat.border};`;
+  el.style.cssText=`top:${top}px;height:${height}px;background:${cat.bg};border-color:${cat.border};`;
   el.innerHTML=`<div class="ev-title" style="color:${cat.text}">${ev.title}</div><div class="ev-time" style="color:${cat.text}">${fmt12(ev.start)}${ev.end?' – '+fmt12(ev.end):''}</div><div class="ev-del" onclick="deleteEv('${ev.id}',event)">✕</div>`;
   attachDrag(el,ev);return el;
 }
@@ -639,7 +639,7 @@ function attachDrag(el,ev){
     const dur=ev.end-ev.start,rect=el.getBoundingClientRect(),offsetY=e.clientY-rect.top;
     const ghost=document.getElementById('drag-ghost');
     const cat=CAT[ev.cat]||CAT.work;
-    ghost.style.cssText=`width:${rect.width}px;height:${rect.height}px;display:block;top:${e.clientY-offsetY}px;left:${rect.left}px;background:${cat.bg};border-left-color:${cat.border};`;
+    ghost.style.cssText=`width:${rect.width}px;height:${rect.height}px;display:block;top:${e.clientY-offsetY}px;left:${rect.left}px;background:${cat.bg};border-color:${cat.border};`;
     ghost.innerHTML=`<div style="font-size:11px;font-weight:700;color:${cat.text}">${ev.title}</div>`;
     el.classList.add('dragging');drag={ev,el,offsetY,dur,ghost};
   });
@@ -701,9 +701,9 @@ function openModal(date,startMins,endMins,evId){
   document.getElementById('qm-start').value=mToI(startMins!=null?startMins:9*60);
   document.getElementById('qm-end').value=mToI(endMins!=null?endMins:10*60);
 
-  // Presets: hardcoded + saved templates
-  const userTmplBtns=templates.map(t=>{const c=CAT[t.cat]||CAT.work;return`<button class="qm-preset" style="background:${c.bg};color:${c.text};border-color:${c.border};" onclick="applyPreset('${t.cat}',${JSON.stringify(t.title)},${t.dur})">⚡ ${escHtml(t.alias)}</button>`;});
-  const allPresets=QUICK_PRESETS.map(p=>`<button class="qm-preset" style="background:${CAT[p.cat].bg};color:${CAT[p.cat].text};border-color:${CAT[p.cat].border};" onclick="applyPreset('${p.cat}',${JSON.stringify(p.name)},${p.dur})">${p.label}</button>`).join('')+userTmplBtns.join('');
+  // Build preset list globally so onclick can reference by index safely
+  window._modalPresets=[...QUICK_PRESETS,...templates.map(t=>({cat:t.cat,name:t.title,dur:t.dur,label:'⚡ '+t.alias}))];
+  const allPresets=window._modalPresets.map((p,i)=>{const c=CAT[p.cat]||CAT.work;return`<button class="qm-preset" style="background:${c.bg};color:${c.text};border-color:${c.border};" onclick="applyPresetIdx(${i})">${escHtml(p.label)}</button>`;}).join('');
   document.getElementById('qm-presets').innerHTML=allPresets;
   document.getElementById('qm-presets-wrap').style.display='block';
 
@@ -718,6 +718,7 @@ function openModal(date,startMins,endMins,evId){
   document.getElementById('qmodal').classList.add('open');
   setTimeout(()=>document.getElementById('qm-name').focus(),50);
 }
+function applyPresetIdx(i){const p=window._modalPresets?.[i];if(p)applyPreset(p.cat,p.name,p.dur);}
 function applyPreset(cat,name,dur){
   selectedCat=cat;
   document.getElementById('qm-name').value=name;
@@ -927,10 +928,19 @@ async function sendToAI(transcript){
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:transcript,today:dateStr(n),time:`${n.getHours()%12||12}:${String(n.getMinutes()).padStart(2,'0')} ${n.getHours()>=12?'PM':'AM'}`,dayOfWeek:DAYSLONG[n.getDay()],userEvents:uEvs.map(e=>({title:e.title,date:e.date,start:e.start,end:e.end})),calendarEvents:cEvs.map(e=>({title:e.title,date:e.date,start:e.start,end:e.end})),templates:templates.map(t=>({alias:t.alias,title:t.title,cat:t.cat,dur:t.dur}))})});
     const data=await r.json();if(data.error)throw new Error(data.error);
     if(data.message){document.getElementById('chat-msg').textContent=data.message;document.getElementById('chat-bar').classList.add('visible');}
+    if(Array.isArray(data.moves)&&data.moves.length>0){
+      data.moves.forEach(mv=>{
+        const idx=events.findIndex(e=>e.title.toLowerCase()===mv.title.toLowerCase());
+        if(idx!==-1){events[idx]={...events[idx],date:mv.date,start:mv.start,end:mv.end||events[idx].end};}
+      });
+      saveEvents();
+    }
     if(Array.isArray(data.events)&&data.events.length>0){
       data.events.forEach(ev=>{if(ev.title&&ev.date&&ev.start!=null)addEvent({title:ev.title,date:ev.date,start:ev.start,end:ev.end||ev.start+60,cat:ev.cat||'work'});});
-      const fe=data.events[0],target=new Date(fe.date+'T12:00'),ws=weekStart(weekOffset),we=new Date(ws);we.setDate(ws.getDate()+6);
-      if(target<ws||target>we){const td=new Date();td.setHours(0,0,0,0);weekOffset=Math.round((target-td)/86400000/7);render();}
+    }
+    if((data.moves?.length||data.events?.length)){
+      const firstEv=data.moves?.[0]||data.events?.[0];
+      if(firstEv){const target=new Date(firstEv.date+'T12:00'),ws=weekStart(weekOffset),we=new Date(ws);we.setDate(ws.getDate()+6);if(target<ws||target>we){const td=new Date();td.setHours(0,0,0,0);weekOffset=Math.round((target-td)/86400000/7);}render();}
     }
   }catch(e){toast('⚠️ AI error — using basic parsing.');processRegex(transcript);}
   finally{btn.className='voice-btn';btn.querySelector('span').textContent='Speak';dot.className='ai-dot'+(aiAvailable?' active':'');}

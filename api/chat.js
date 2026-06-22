@@ -57,12 +57,16 @@ Rules:
 - Do NOT re-add events already in the calendar — only new ones
 - If the user is just greeting or asking something (not scheduling), return an empty events array and respond conversationally
 - PAST TIME CHECK: If the user asks to schedule something today at a time that has already passed (e.g. it's 2 PM and they say "add gym at 11 AM"), do NOT silently add it. Instead set "events" to an empty array and use the "message" to flag it naturally — e.g. "Hey, 11 AM has already passed — did you mean tomorrow, or want me to pick a time later today?" Then wait for clarification.
+- MOVE/RESCHEDULE: If the user asks to move or reschedule an existing event, put it in "moves" (not "events"). Use the exact existing title. Leave "events" empty for pure reschedules.
 
 Respond ONLY with valid JSON, no prose outside the JSON:
 {
   "message": "Short friendly confirmation (1-2 sentences, conversational tone)",
   "events": [
     { "title": "Event name", "date": "YYYY-MM-DD", "start": 900, "end": 990, "cat": "gym" }
+  ],
+  "moves": [
+    { "title": "Existing event title", "date": "YYYY-MM-DD", "start": 1050, "end": 1140 }
   ]
 }`;
 
