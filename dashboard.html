@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ora</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='10' fill='%232B2C30'/><circle cx='16' cy='16' r='7' fill='none' stroke='white' stroke-width='2.5'/><line x1='16' y1='4' x2='16' y2='8' stroke='white' stroke-width='2.5' stroke-linecap='round'/><line x1='16' y1='24' x2='16' y2='28' stroke='white' stroke-width='2.5' stroke-linecap='round'/><line x1='4' y1='16' x2='8' y2='16' stroke='white' stroke-width='2.5' stroke-linecap='round'/><line x1='24' y1='16' x2='28' y2='16' stroke='white' stroke-width='2.5' stroke-linecap='round'/></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'><rect width='44' height='44' rx='11' fill='%232B2C30'/><circle cx='22' cy='22' r='11' stroke='white' stroke-width='1.3' stroke-dasharray='2.5 2.5' opacity='.4'/><circle cx='22' cy='22' r='3.5' fill='white'/><circle cx='22' cy='11' r='2.5' fill='white'/></svg>">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;background:#F2EAE0;color:#0F172A;height:100vh;display:flex;flex-direction:row;overflow:hidden;font-size:14px;user-select:none;padding:14px 16px;gap:10px;}
@@ -14,9 +14,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 #lock{position:fixed;inset:0;background:#F2EAE0;z-index:9999;display:flex;align-items:center;justify-content:center;}
 .lock-card{width:320px;padding:36px 28px;background:#fff;border:1px solid #E8EAF0;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center;gap:16px;}
 .lock-logo{display:flex;align-items:center;gap:9px;}
-.lock-logo-mark{width:36px;height:36px;background:#2B2C30;border-radius:10px;display:flex;align-items:center;justify-content:center;}
-.lock-logo-mark svg{width:20px;height:20px;}
-.lock-logo-name{font-size:22px;font-weight:800;color:#0F172A;letter-spacing:-1px;}
+.lock-logo-mark{display:flex;align-items:center;justify-content:center;}
+.lock-logo-name{font-size:22px;font-weight:300;color:#0F172A;letter-spacing:-.5px;}
 .lock-sub{font-size:12.5px;color:#94A3B8;}
 .lock-input{width:100%;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:14px;outline:none;text-align:center;}
 .lock-input:focus{border-color:#2B2C30;}
@@ -26,8 +25,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 
 /* ── SIDEBAR ── */
 .sidebar{width:210px;flex-shrink:0;display:flex;flex-direction:column;padding:6px 0 6px 2px;overflow:hidden;background:rgba(255,255,255,.28);border-radius:16px;border:1px solid rgba(120,100,80,.09);box-shadow:0 1px 3px rgba(100,80,60,.04),0 4px 14px rgba(100,80,60,.05);}
-.sb-logo{font-size:18px;font-weight:800;color:#0F172A;letter-spacing:-.5px;padding:6px 12px 18px;}
-.sb-logo span{font-weight:400;color:#94A3B8;font-size:16px;}
+.sb-logo{display:flex;align-items:center;gap:9px;padding:12px 12px 20px;}
+.sb-logo-text{font-size:26px;font-weight:300;color:#0F172A;letter-spacing:-1px;line-height:1;}
 .sb-nav{display:flex;flex-direction:column;gap:3px;padding:0 8px;}
 .sb-nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:13px;font-weight:600;color:#5A5A54;cursor:pointer;transition:background .1s;}
 .sb-nav-item:hover{background:rgba(255,255,255,.5);}
@@ -294,15 +293,13 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
   <div class="lock-card">
     <div class="lock-logo">
       <div class="lock-logo-mark">
-        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="10" cy="10" r="5" stroke="white" stroke-width="2"/>
-          <line x1="10" y1="2" x2="10" y2="5" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <line x1="10" y1="15" x2="10" y2="18" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <line x1="2" y1="10" x2="5" y2="10" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <line x1="15" y1="10" x2="18" y2="10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <svg width="48" height="48" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="44" height="44" rx="11" fill="#2B2C30"/>
+          <circle cx="22" cy="22" r="11" stroke="white" stroke-width="1.3" stroke-dasharray="2.5 2.5" opacity=".4"/>
+          <circle cx="22" cy="22" r="3.5" fill="white"/>
+          <circle cx="22" cy="11" r="2.5" fill="white"/>
         </svg>
       </div>
-      <div class="lock-logo-name">Ora</div>
     </div>
     <div class="lock-sub">Your personal scheduling assistant</div>
     <input class="lock-input" type="password" id="lock-input" placeholder="Password">
@@ -314,7 +311,15 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
 <!-- SIDEBAR -->
 <div class="sidebar" id="left-sidebar">
   <button class="collapse-btn sb-collapse" onclick="toggleLeftSidebar()" id="sb-collapse-btn" title="Collapse sidebar">‹</button>
-  <div class="sb-logo">Ora <span>beta</span></div>
+  <div class="sb-logo">
+    <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="44" height="44" rx="11" fill="#2B2C30"/>
+      <circle cx="22" cy="22" r="11" stroke="white" stroke-width="1.3" stroke-dasharray="2.5 2.5" opacity=".4"/>
+      <circle cx="22" cy="22" r="3.5" fill="white"/>
+      <circle cx="22" cy="11" r="2.5" fill="white"/>
+    </svg>
+    <span class="sb-logo-text">Ora</span>
+  </div>
   <div class="sb-nav">
     <div class="sb-nav-item active"><i class="ti ti-calendar-week sb-nav-icon"></i> Week</div>
     <div class="sb-nav-item"><i class="ti ti-layout-list sb-nav-icon"></i> Agenda</div>
@@ -345,19 +350,6 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
 
   <!-- TOPBAR -->
   <div class="topbar">
-    <div class="tb-logo">
-      <div class="tb-logo-mark">
-        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="10" cy="10" r="5" stroke="white" stroke-width="2"/>
-          <line x1="10" y1="2" x2="10" y2="5" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <line x1="10" y1="15" x2="10" y2="18" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <line x1="2" y1="10" x2="5" y2="10" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <line x1="15" y1="10" x2="18" y2="10" stroke="white" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="tb-logo-name">Ora</div>
-    </div>
-    <div class="tb-divider"></div>
     <div class="tb-nav">
       <button class="tb-btn" onclick="shiftWeek(-1)">‹</button>
       <button class="tb-btn today" onclick="goToday()">Today</button>
