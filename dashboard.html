@@ -84,12 +84,57 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .icon-btn:hover{background:#EAE3D8;}
 
 /* ── AI RESPONSE BAR ── */
-#chat-bar{background:#fff;border-radius:12px;border:1px solid #E8EAF0;padding:10px 14px;display:none;align-items:flex-start;gap:10px;flex-shrink:0;}
-#chat-bar.visible{display:flex;}
+#chat-bar{background:#fff;border-radius:12px;border:1px solid #E8EAF0;padding:10px 14px;display:flex;align-items:flex-start;gap:10px;flex-shrink:0;}
 .chat-av{width:24px;height:24px;border-radius:50%;background:#2B2C30;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;margin-top:1px;}
 #chat-msg{flex:1;font-size:12.5px;color:#1E293B;line-height:1.5;}
+#chat-msg.placeholder{color:#CBD5E1;font-style:italic;}
 .chat-close{font-size:15px;color:#CBD5E1;cursor:pointer;padding:1px 4px;}
 .chat-close:hover{color:#64748B;}
+
+/* ── AGENDA / TASKS / HABITS VIEWS ── */
+.view-card{background:#FBF7F2;border-radius:16px;border:1px solid rgba(120,100,80,.09);box-shadow:0 1px 3px rgba(100,80,60,.05),0 4px 20px rgba(100,80,60,.06);flex:1;display:none;flex-direction:column;overflow:hidden;min-height:0;}
+.view-card.active{display:flex;}
+.view-scroll{flex:1;overflow-y:auto;padding:18px 16px;}
+.view-section-hdr{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#C4C9D4;margin:18px 0 8px;padding-bottom:6px;border-bottom:1px solid rgba(120,100,80,.08);}
+.view-section-hdr:first-child{margin-top:0;}
+.view-empty{font-size:13px;color:#CBD5E1;padding:20px 0;text-align:center;}
+/* agenda */
+.ag-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(120,100,80,.06);}
+.ag-item:last-child{border-bottom:none;}
+.ag-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.ag-time{font-size:11px;font-weight:600;color:#94A3B8;min-width:70px;flex-shrink:0;padding-top:1px;}
+.ag-title{font-size:13px;font-weight:600;color:#0F172A;}
+.ag-sub{font-size:11px;color:#94A3B8;margin-top:1px;}
+/* tasks */
+.task-add-row{display:flex;gap:8px;margin-bottom:16px;}
+.task-input{flex:1;font-family:inherit;font-size:13px;padding:9px 12px;border-radius:10px;border:1px solid rgba(120,100,80,.15);background:#fff;outline:none;color:#0F172A;}
+.task-input:focus{border-color:#2B2C30;}
+.task-add-submit{font-family:inherit;font-size:12px;font-weight:700;padding:9px 14px;border-radius:10px;border:none;background:#2B2C30;color:#fff;cursor:pointer;}
+.task-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fff;border-radius:10px;border:1px solid rgba(120,100,80,.08);margin-bottom:6px;transition:opacity .15s;}
+.task-item.done{opacity:.45;}
+.task-cb{width:18px;height:18px;border-radius:5px;border:1.5px solid #C8C7BA;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .15s;}
+.task-cb.checked{background:#2B2C30;border-color:#2B2C30;color:#fff;font-size:11px;}
+.task-title{flex:1;font-size:13px;color:#0F172A;font-weight:500;}
+.task-item.done .task-title{text-decoration:line-through;color:#94A3B8;}
+.task-cat-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.task-del{font-size:14px;color:#E2E8F0;cursor:pointer;padding:0 2px;line-height:1;}
+.task-del:hover{color:#EF4444;}
+.task-filter-row{display:flex;gap:6px;margin-bottom:14px;}
+.task-filter{font-family:inherit;font-size:11px;font-weight:600;padding:5px 11px;border-radius:7px;border:1px solid #D8D7CA;background:#FBF7F2;color:#5A5A54;cursor:pointer;}
+.task-filter.active{background:#2B2C30;color:#fff;border-color:#2B2C30;}
+/* habits */
+.habit-add-row{display:flex;gap:8px;margin-bottom:16px;}
+.habit-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-radius:12px;border:1px solid rgba(120,100,80,.08);margin-bottom:8px;}
+.habit-emoji{font-size:20px;flex-shrink:0;}
+.habit-info{flex:1;}
+.habit-name{font-size:13px;font-weight:600;color:#0F172A;}
+.habit-streak{font-size:10.5px;color:#94A3B8;margin-top:1px;}
+.habit-week{display:flex;gap:4px;}
+.habit-day{width:26px;height:26px;border-radius:7px;border:1.5px solid rgba(120,100,80,.12);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#C4C9D4;cursor:pointer;transition:all .12s;flex-shrink:0;}
+.habit-day.done{background:#2B2C30;border-color:#2B2C30;color:#fff;}
+.habit-day.today-col{border-color:#94A3B8;}
+.habit-del{font-size:14px;color:#E2E8F0;cursor:pointer;padding:0 2px;}
+.habit-del:hover{color:#EF4444;}
 
 /* ── CALENDAR CARD ── */
 .cal-card{background:#FBF7F2;border-radius:16px;border:1px solid rgba(120,100,80,.09);box-shadow:0 1px 3px rgba(100,80,60,.05),0 4px 20px rgba(100,80,60,.06);flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
@@ -174,9 +219,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .free-none{font-size:11px;color:#94A3B8;margin-top:4px;}
 
 /* weather */
-.wx-main{display:flex;align-items:center;gap:10px;flex:1;}
-.wx-icon{font-size:32px;line-height:1;flex-shrink:0;}
+.wx-main{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:14px;}
+.wx-icon{font-size:36px;line-height:1;flex-shrink:0;}
 .wx-info{display:flex;flex-direction:column;gap:2px;}
+.wx-hourly{display:flex;gap:6px;margin-bottom:12px;}
+.wx-hour{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;background:rgba(120,100,80,.05);border-radius:8px;padding:6px 4px;}
+.wx-hour-time{font-size:9px;font-weight:600;color:#94A3B8;text-transform:uppercase;}
+.wx-hour-icon{font-size:16px;line-height:1;}
+.wx-hour-temp{font-size:11px;font-weight:700;color:#0F172A;}
+.wx-daily{display:flex;flex-direction:column;gap:5px;border-top:1px solid rgba(120,100,80,.08);padding-top:10px;}
+.wx-day-row{display:flex;align-items:center;gap:8px;}
+.wx-day-name{font-size:11px;font-weight:600;color:#64748B;width:28px;}
+.wx-day-icon{font-size:14px;flex-shrink:0;}
+.wx-day-cond{font-size:10.5px;color:#94A3B8;flex:1;}
+.wx-day-range{font-size:11px;font-weight:600;color:#0F172A;white-space:nowrap;}
 .wx-temp{font-size:22px;font-weight:700;color:#0F172A;letter-spacing:-1px;line-height:1;}
 .wx-cond{font-size:11px;color:#64748B;}
 .wx-loc{font-size:10px;color:#B8C0CC;margin-top:2px;}
@@ -321,10 +377,10 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
     <span class="sb-logo-text">Ora</span>
   </div>
   <div class="sb-nav">
-    <div class="sb-nav-item active"><i class="ti ti-calendar-week sb-nav-icon"></i> Week</div>
-    <div class="sb-nav-item"><i class="ti ti-layout-list sb-nav-icon"></i> Agenda</div>
-    <div class="sb-nav-item"><i class="ti ti-checklist sb-nav-icon"></i> Tasks</div>
-    <div class="sb-nav-item"><i class="ti ti-flame sb-nav-icon"></i> Habits</div>
+    <div class="sb-nav-item active" onclick="setView('week')"><i class="ti ti-calendar-week sb-nav-icon"></i> Week</div>
+    <div class="sb-nav-item" onclick="setView('agenda')"><i class="ti ti-layout-list sb-nav-icon"></i> Agenda</div>
+    <div class="sb-nav-item" onclick="setView('tasks')"><i class="ti ti-checklist sb-nav-icon"></i> Tasks</div>
+    <div class="sb-nav-item" onclick="setView('habits')"><i class="ti ti-flame sb-nav-icon"></i> Habits</div>
   </div>
   <div class="sb-divider"></div>
   <div class="sb-mini-cal">
@@ -364,13 +420,6 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
     </div>
   </div>
 
-  <!-- AI CHAT BAR -->
-  <div id="chat-bar">
-    <div class="chat-av">AI</div>
-    <div id="chat-msg"></div>
-    <div class="chat-close" onclick="document.getElementById('chat-bar').classList.remove('visible')">✕</div>
-  </div>
-
   <!-- CALENDAR CARD -->
   <div class="cal-card">
     <div class="day-header">
@@ -381,6 +430,45 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
       <div class="time-gutter" id="time-gutter"></div>
       <div class="day-cols" id="day-cols"></div>
     </div>
+  </div>
+
+  <!-- AGENDA VIEW -->
+  <div class="view-card" id="view-agenda">
+    <div class="view-scroll" id="agenda-scroll"></div>
+  </div>
+
+  <!-- TASKS VIEW -->
+  <div class="view-card" id="view-tasks">
+    <div class="view-scroll">
+      <div class="task-add-row">
+        <input class="task-input" id="task-input" placeholder="Add a task…" onkeydown="if(event.key==='Enter')addTask()">
+        <button class="task-add-submit" onclick="addTask()">Add</button>
+      </div>
+      <div class="task-filter-row">
+        <button class="task-filter active" onclick="setTaskFilter('all',this)">All</button>
+        <button class="task-filter" onclick="setTaskFilter('active',this)">Active</button>
+        <button class="task-filter" onclick="setTaskFilter('done',this)">Done</button>
+      </div>
+      <div id="task-list"></div>
+    </div>
+  </div>
+
+  <!-- HABITS VIEW -->
+  <div class="view-card" id="view-habits">
+    <div class="view-scroll">
+      <div class="habit-add-row">
+        <input class="task-input" id="habit-input" placeholder="New habit… (e.g. 🏃 Run)" onkeydown="if(event.key==='Enter')addHabit()">
+        <button class="task-add-submit" onclick="addHabit()">Add</button>
+      </div>
+      <div id="habit-list"></div>
+    </div>
+  </div>
+
+  <!-- AI CHAT BAR -->
+  <div id="chat-bar">
+    <div class="chat-av">AI</div>
+    <div id="chat-msg" class="placeholder">Tap Speak and tell me what's on your day — I'll schedule it for you.</div>
+    <div class="chat-close" id="chat-close" onclick="clearChatMsg()" style="display:none;">✕</div>
   </div>
 
 </div>
@@ -706,14 +794,35 @@ function loadWeather(){
   navigator.geolocation.getCurrentPosition(async pos=>{
     try{
       const{latitude:lat,longitude:lon}=pos.coords;
-      const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit&timezone=auto`);
+      const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&hourly=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&temperature_unit=fahrenheit&timezone=auto&forecast_days=4`);
       const d=await r.json();
       const temp=Math.round(d.current.temperature_2m);
       const code=d.current.weather_code;
-      // Reverse geocode city
+      // City
       let city='';
       try{const gr=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);const gd=await gr.json();city=gd.address?.city||gd.address?.town||gd.address?.village||'';}catch(e){}
-      wxEl.innerHTML=`<div class="wx-main"><div class="wx-icon">${wxIcon(code)}</div><div class="wx-info"><div class="wx-temp">${temp}°F</div><div class="wx-cond">${wxLabel(code)}</div>${city?`<div class="wx-loc">${city}</div>`:''}</div></div>`;
+      // Next 4 hours
+      const now=new Date();const nowH=now.getHours();
+      const hours=d.hourly.time.map((t,i)=>({h:new Date(t).getHours(),temp:Math.round(d.hourly.temperature_2m[i]),code:d.hourly.weather_code[i],iso:t}));
+      const nextHours=hours.filter(h=>new Date(h.iso)>now).slice(0,4);
+      const hourlyHTML=nextHours.map(h=>{
+        const label=new Date(h.iso).toLocaleTimeString([],{hour:'numeric',hour12:true}).replace(' ','').toLowerCase();
+        return`<div class="wx-hour"><div class="wx-hour-time">${label}</div><div class="wx-hour-icon">${wxIcon(h.code)}</div><div class="wx-hour-temp">${h.temp}°</div></div>`;
+      }).join('');
+      // Next 3 days
+      const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const dailyHTML=d.daily.time.slice(1,4).map((t,i)=>{
+        const idx=i+1;
+        const day=days[new Date(t).getDay()];
+        const hi=Math.round(d.daily.temperature_2m_max[idx]);
+        const lo=Math.round(d.daily.temperature_2m_min[idx]);
+        const dc=d.daily.weather_code[idx];
+        return`<div class="wx-day-row"><div class="wx-day-name">${day}</div><div class="wx-day-icon">${wxIcon(dc)}</div><div class="wx-day-cond">${wxLabel(dc)}</div><div class="wx-day-range">${hi}° / ${lo}°</div></div>`;
+      }).join('');
+      wxEl.innerHTML=`
+        <div class="wx-main"><div class="wx-icon">${wxIcon(code)}</div><div class="wx-info"><div class="wx-temp">${temp}°F</div><div class="wx-cond">${wxLabel(code)}</div>${city?`<div class="wx-loc">${city}</div>`:''}</div></div>
+        <div class="wx-hourly">${hourlyHTML}</div>
+        <div class="wx-daily">${dailyHTML}</div>`;
     }catch(e){wxEl.innerHTML='<div class="wx-loading">Weather unavailable</div>';}
   },()=>{wxEl.innerHTML='<div class="wx-loading">Allow location for weather</div>';});
 }
@@ -803,6 +912,167 @@ function showPopup(ev,cx,cy){
   popup.style.left=x+'px';popup.style.top=y+'px';
 }
 function closePopup(){document.getElementById('ev-popup').classList.remove('open');}
+function clearChatMsg(){const m=document.getElementById('chat-msg');m.textContent='Tap Speak and tell me what\'s on your day — I\'ll schedule it for you.';m.classList.add('placeholder');document.getElementById('chat-close').style.display='none';}
+
+// ════════════════════════════════════════════════
+// VIEW SWITCHING
+// ════════════════════════════════════════════════
+let currentView='week';
+function setView(v){
+  currentView=v;
+  // nav active state
+  document.querySelectorAll('.sb-nav-item').forEach((el,i)=>{
+    const views=['week','agenda','tasks','habits'];
+    el.classList.toggle('active',views[i]===v);
+  });
+  // show/hide cal card + chat bar
+  const calCard=document.querySelector('.cal-card');
+  const chatBar=document.getElementById('chat-bar');
+  calCard.style.display=v==='week'?'flex':'none';
+  chatBar.style.display=v==='week'?'flex':'none';
+  // show/hide view cards
+  ['agenda','tasks','habits'].forEach(name=>{
+    const el=document.getElementById('view-'+name);
+    if(el)el.classList.toggle('active',v===name);
+  });
+  // topbar nav visibility
+  document.querySelector('.tb-nav').style.visibility=v==='week'?'visible':'hidden';
+  // render
+  if(v==='agenda')renderAgenda();
+  if(v==='tasks')renderTasks();
+  if(v==='habits')renderHabits();
+}
+
+// ════════════════════════════════════════════════
+// AGENDA
+// ════════════════════════════════════════════════
+function renderAgenda(){
+  const el=document.getElementById('agenda-scroll');
+  const now=new Date();now.setHours(0,0,0,0);
+  // get next 14 days of events
+  const upcoming=events
+    .map(e=>({...e,_d:new Date(e.date+'T00:00')}))
+    .filter(e=>e._d>=now)
+    .sort((a,b)=>a._d-b._d||a.start-b.start);
+  if(!upcoming.length){el.innerHTML='<div class="view-empty">No upcoming events</div>';return;}
+  // group by date
+  const groups={};
+  upcoming.forEach(e=>{
+    if(!groups[e.date])groups[e.date]=[];
+    groups[e.date].push(e);
+  });
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let html='';
+  Object.entries(groups).forEach(([date,evs])=>{
+    const d=new Date(date+'T00:00');
+    const isToday=date===toDateStr(new Date());
+    html+=`<div class="view-section-hdr">${isToday?'Today — ':''}${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}</div>`;
+    evs.forEach(e=>{
+      const cat=CAT[e.cat]||CAT.work;
+      const t=s=>s<720?(s<60?`12:${String(s).padStart(2,'0')} AM`:`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')} ${s<720?'AM':'PM'}`):(s===720?'12:00 PM':`${Math.floor((s-720)/60+12>12?s/60-12:s/60)}:${String(s%60).padStart(2,'0')} PM`);
+      const fmt=m=>{const h=Math.floor(m/60),mn=m%60,ap=h<12?'AM':'PM',hr=h%12||12;return`${hr}:${String(mn).padStart(2,'0')} ${ap}`;};
+      html+=`<div class="ag-item"><div class="ag-dot" style="background:${cat.border}"></div><div class="ag-time">${fmt(e.start)}</div><div><div class="ag-title">${escHtml(e.title)}</div><div class="ag-sub">${fmt(e.start)} – ${fmt(e.end)}${e.location?` · ${escHtml(e.location)}`:''}${e.cat?` · ${cat.label}`:''}</div></div></div>`;
+    });
+  });
+  el.innerHTML=html;
+}
+function toDateStr(d){return d.toISOString().slice(0,10);}
+
+// ════════════════════════════════════════════════
+// TASKS
+// ════════════════════════════════════════════════
+let tasks=JSON.parse(localStorage.getItem('mc_tasks')||'[]');
+let taskFilter='all';
+function saveTasks(){localStorage.setItem('mc_tasks',JSON.stringify(tasks));}
+function addTask(){
+  const inp=document.getElementById('task-input');
+  const title=inp.value.trim();if(!title)return;
+  tasks.push({id:Date.now()+'',title,done:false,cat:'work'});
+  saveTasks();inp.value='';renderTasks();
+}
+function toggleTask(id){
+  const t=tasks.find(t=>t.id===id);if(t)t.done=!t.done;
+  saveTasks();renderTasks();
+}
+function deleteTask(id){tasks=tasks.filter(t=>t.id!==id);saveTasks();renderTasks();}
+function setTaskFilter(f,btn){
+  taskFilter=f;
+  document.querySelectorAll('.task-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderTasks();
+}
+function renderTasks(){
+  const el=document.getElementById('task-list');if(!el)return;
+  let filtered=tasks;
+  if(taskFilter==='active')filtered=tasks.filter(t=>!t.done);
+  if(taskFilter==='done')filtered=tasks.filter(t=>t.done);
+  if(!filtered.length){el.innerHTML=`<div class="view-empty">${taskFilter==='done'?'Nothing completed yet':'No tasks — add one above'}</div>`;return;}
+  el.innerHTML=filtered.map(t=>`
+    <div class="task-item${t.done?' done':''}">
+      <div class="task-cb${t.done?' checked':''}" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</div>
+      <div class="task-title">${escHtml(t.title)}</div>
+      <div class="task-del" onclick="deleteTask('${t.id}')">✕</div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════
+// HABITS
+// ════════════════════════════════════════════════
+let habits=JSON.parse(localStorage.getItem('mc_habits')||'[]');
+function saveHabits(){localStorage.setItem('mc_habits',JSON.stringify(habits));}
+function addHabit(){
+  const inp=document.getElementById('habit-input');
+  const val=inp.value.trim();if(!val)return;
+  habits.push({id:Date.now()+'',name:val,completions:[]});
+  saveHabits();inp.value='';renderHabits();
+}
+function toggleHabit(id,dateStr){
+  const h=habits.find(h=>h.id===id);if(!h)return;
+  const idx=h.completions.indexOf(dateStr);
+  if(idx>=0)h.completions.splice(idx,1);else h.completions.push(dateStr);
+  saveHabits();renderHabits();
+}
+function deleteHabit(id){habits=habits.filter(h=>h.id!==id);saveHabits();renderHabits();}
+function renderHabits(){
+  const el=document.getElementById('habit-list');if(!el)return;
+  if(!habits.length){el.innerHTML='<div class="view-empty">Add a habit to start tracking</div>';return;}
+  const today=new Date();today.setHours(0,0,0,0);
+  const days=['S','M','T','W','T','F','S'];
+  // get this week Sun-Sat
+  const weekStart=new Date(today);weekStart.setDate(today.getDate()-today.getDay());
+  const weekDays=Array.from({length:7},(_,i)=>{const d=new Date(weekStart);d.setDate(weekStart.getDate()+i);return d;});
+  const todayStr=toDateStr(today);
+  el.innerHTML=habits.map(h=>{
+    const streak=calcStreak(h.completions);
+    const dayHTML=weekDays.map((d,i)=>{
+      const ds=toDateStr(d);
+      const done=h.completions.includes(ds);
+      const isToday=ds===todayStr;
+      const isFuture=d>today;
+      return`<div class="habit-day${done?' done':''}${isToday?' today-col':''}" ${isFuture?'style="opacity:.35;cursor:default"':''} onclick="${isFuture?'':'toggleHabit(\''+h.id+'\',\''+ds+'\')'}">${days[i]}</div>`;
+    }).join('');
+    return`<div class="habit-item">
+      <div class="habit-info">
+        <div class="habit-name">${escHtml(h.name)}</div>
+        <div class="habit-streak">${streak} day streak</div>
+      </div>
+      <div class="habit-week">${dayHTML}</div>
+      <div class="habit-del" onclick="deleteHabit('${h.id}')">✕</div>
+    </div>`;
+  }).join('');
+}
+function calcStreak(completions){
+  if(!completions.length)return 0;
+  const sorted=[...completions].sort().reverse();
+  const today=new Date();today.setHours(0,0,0,0);
+  let streak=0,check=new Date(today);
+  while(true){
+    const ds=toDateStr(check);
+    if(sorted.includes(ds)){streak++;check.setDate(check.getDate()-1);}
+    else break;
+  }
+  return streak;
+}
 document.addEventListener('click',e=>{if(!e.target.closest('#ev-popup')&&!e.target.closest('.ev'))closePopup();});
 
 // ════════════════════════════════════════════════
@@ -1140,7 +1410,7 @@ async function sendToAI(transcript){
   try{
     const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:transcript,today:dateStr(n),time:`${n.getHours()%12||12}:${String(n.getMinutes()).padStart(2,'0')} ${n.getHours()>=12?'PM':'AM'}`,dayOfWeek:DAYSLONG[n.getDay()],userEvents:uEvs.map(e=>({title:e.title,date:e.date,start:e.start,end:e.end})),calendarEvents:cEvs.map(e=>({title:e.title,date:e.date,start:e.start,end:e.end})),templates:templates.map(t=>({alias:t.alias,title:t.title,cat:t.cat,dur:t.dur}))})});
     const data=await r.json();if(data.error)throw new Error(data.error);
-    if(data.message){document.getElementById('chat-msg').textContent=data.message;document.getElementById('chat-bar').classList.add('visible');}
+    if(data.message){const m=document.getElementById('chat-msg');m.textContent=data.message;m.classList.remove('placeholder');document.getElementById('chat-close').style.display='inline';}
     if(Array.isArray(data.moves)&&data.moves.length>0){
       data.moves.forEach(mv=>{
         const idx=events.findIndex(e=>e.title.toLowerCase()===mv.title.toLowerCase());
