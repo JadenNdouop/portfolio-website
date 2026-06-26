@@ -119,6 +119,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .task-cat-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .task-del{font-size:14px;color:#E2E8F0;cursor:pointer;padding:0 2px;line-height:1;}
 .task-del:hover{color:#EF4444;}
+.task-sched{font-size:13px;background:none;border:none;cursor:pointer;opacity:.35;padding:0 2px;line-height:1;transition:opacity .12s;}
+.task-sched:hover{opacity:1;}
 .task-filter-row{display:flex;gap:6px;margin-bottom:14px;}
 .task-filter{font-family:inherit;font-size:11px;font-weight:600;padding:5px 11px;border-radius:7px;border:1px solid #D8D7CA;background:#FBF7F2;color:#5A5A54;cursor:pointer;}
 .task-filter.active{background:#2B2C30;color:#fff;border-color:#2B2C30;}
@@ -442,7 +444,7 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
     <div class="view-scroll">
       <div class="task-add-row">
         <input class="task-input" id="task-input" placeholder="Add a task…" onkeydown="if(event.key==='Enter')addTask()">
-        <button class="task-add-submit" onclick="addTask()">Add</button>
+        <button class="task-add-submit" id="task-add-btn" onclick="addTask()">Add</button>
       </div>
       <div class="task-filter-row">
         <button class="task-filter active" onclick="setTaskFilter('all',this)">All</button>
@@ -458,7 +460,7 @@ hr.sp-div{border:none;border-top:1px solid #F1F5F9;}
     <div class="view-scroll">
       <div class="habit-add-row">
         <input class="task-input" id="habit-input" placeholder="New habit… (e.g. 🏃 Run)" onkeydown="if(event.key==='Enter')addHabit()">
-        <button class="task-add-submit" onclick="addHabit()">Add</button>
+        <button class="task-add-submit" id="habit-add-btn" onclick="addHabit()">Add</button>
       </div>
       <div id="habit-list"></div>
     </div>
@@ -982,98 +984,150 @@ function toDateStr(d){return d.toISOString().slice(0,10);}
 // ════════════════════════════════════════════════
 // TASKS
 // ════════════════════════════════════════════════
-let tasks=JSON.parse(localStorage.getItem('mc_tasks')||'[]');
+let taskList=JSON.parse(localStorage.getItem('mc_tasks')||'[]');
 let taskFilter='all';
-function saveTasks(){localStorage.setItem('mc_tasks',JSON.stringify(tasks));}
+function saveTasks(){localStorage.setItem('mc_tasks',JSON.stringify(taskList));}
 function addTask(){
   const inp=document.getElementById('task-input');
-  const title=inp.value.trim();if(!title)return;
-  tasks.push({id:Date.now()+'',title,done:false,cat:'work'});
-  saveTasks();inp.value='';renderTasks();
+  if(!inp)return;
+  const title=inp.value.trim();
+  if(!title)return;
+  taskList.push({id:Date.now()+'',title,done:false});
+  saveTasks();
+  inp.value='';
+  renderTasks();
 }
 function toggleTask(id){
-  const t=tasks.find(t=>t.id===id);if(t)t.done=!t.done;
+  const t=taskList.find(x=>x.id===id);
+  if(t){t.done=!t.done;saveTasks();renderTasks();}
+}
+function deleteTask(id){
+  taskList=taskList.filter(x=>x.id!==id);
   saveTasks();renderTasks();
 }
-function deleteTask(id){tasks=tasks.filter(t=>t.id!==id);saveTasks();renderTasks();}
 function setTaskFilter(f,btn){
   taskFilter=f;
   document.querySelectorAll('.task-filter').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');renderTasks();
+  if(btn)btn.classList.add('active');
+  renderTasks();
+}
+function scheduleItem(title){
+  setView('week');
+  // slight delay so the view switch completes before modal opens
+  setTimeout(()=>{
+    openModal(dateStr(new Date()));
+    setTimeout(()=>{document.getElementById('qm-name').value=title;},80);
+  },80);
 }
 function renderTasks(){
-  const el=document.getElementById('task-list');if(!el)return;
-  let filtered=tasks;
-  if(taskFilter==='active')filtered=tasks.filter(t=>!t.done);
-  if(taskFilter==='done')filtered=tasks.filter(t=>t.done);
-  if(!filtered.length){el.innerHTML=`<div class="view-empty">${taskFilter==='done'?'Nothing completed yet':'No tasks — add one above'}</div>`;return;}
+  const el=document.getElementById('task-list');
+  if(!el)return;
+  const filtered=taskFilter==='active'?taskList.filter(t=>!t.done):
+                 taskFilter==='done'?taskList.filter(t=>t.done):taskList;
+  if(!filtered.length){
+    el.innerHTML=`<div class="view-empty">${taskFilter==='done'?'Nothing completed yet':'No tasks — add one above'}</div>`;
+    return;
+  }
   el.innerHTML=filtered.map(t=>`
-    <div class="task-item${t.done?' done':''}">
-      <div class="task-cb${t.done?' checked':''}" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</div>
+    <div class="task-item${t.done?' done':''}" data-id="${t.id}">
+      <div class="task-cb${t.done?' checked':''}" data-action="toggle" data-id="${t.id}">${t.done?'✓':''}</div>
       <div class="task-title">${escHtml(t.title)}</div>
-      <div class="task-del" onclick="deleteTask('${t.id}')">✕</div>
+      <button class="task-sched" data-action="sched" data-title="${escHtml(t.title)}" title="Schedule on calendar">📅</button>
+      <div class="task-del" data-action="del" data-id="${t.id}">✕</div>
     </div>`).join('');
 }
 
 // ════════════════════════════════════════════════
 // HABITS
 // ════════════════════════════════════════════════
-let habits=JSON.parse(localStorage.getItem('mc_habits')||'[]');
-function saveHabits(){localStorage.setItem('mc_habits',JSON.stringify(habits));}
+let habitList=JSON.parse(localStorage.getItem('mc_habits')||'[]');
+function saveHabits(){localStorage.setItem('mc_habits',JSON.stringify(habitList));}
 function addHabit(){
   const inp=document.getElementById('habit-input');
-  const val=inp.value.trim();if(!val)return;
-  habits.push({id:Date.now()+'',name:val,completions:[]});
-  saveHabits();inp.value='';renderHabits();
+  if(!inp)return;
+  const val=inp.value.trim();
+  if(!val)return;
+  habitList.push({id:Date.now()+'',name:val,completions:[]});
+  saveHabits();
+  inp.value='';
+  renderHabits();
 }
-function toggleHabit(id,dateStr){
-  const h=habits.find(h=>h.id===id);if(!h)return;
-  const idx=h.completions.indexOf(dateStr);
-  if(idx>=0)h.completions.splice(idx,1);else h.completions.push(dateStr);
+function toggleHabitDay(id,ds){
+  const h=habitList.find(x=>x.id===id);
+  if(!h)return;
+  const idx=h.completions.indexOf(ds);
+  if(idx>=0)h.completions.splice(idx,1);else h.completions.push(ds);
   saveHabits();renderHabits();
 }
-function deleteHabit(id){habits=habits.filter(h=>h.id!==id);saveHabits();renderHabits();}
-function renderHabits(){
-  const el=document.getElementById('habit-list');if(!el)return;
-  if(!habits.length){el.innerHTML='<div class="view-empty">Add a habit to start tracking</div>';return;}
-  const today=new Date();today.setHours(0,0,0,0);
-  const days=['S','M','T','W','T','F','S'];
-  // get this week Sun-Sat
-  const weekStart=new Date(today);weekStart.setDate(today.getDate()-today.getDay());
-  const weekDays=Array.from({length:7},(_,i)=>{const d=new Date(weekStart);d.setDate(weekStart.getDate()+i);return d;});
-  const todayStr=toDateStr(today);
-  el.innerHTML=habits.map(h=>{
-    const streak=calcStreak(h.completions);
-    const dayHTML=weekDays.map((d,i)=>{
-      const ds=toDateStr(d);
-      const done=h.completions.includes(ds);
-      const isToday=ds===todayStr;
-      const isFuture=d>today;
-      return`<div class="habit-day${done?' done':''}${isToday?' today-col':''}" ${isFuture?'style="opacity:.35;cursor:default"':''} onclick="${isFuture?'':'toggleHabit(\''+h.id+'\',\''+ds+'\')'}">${days[i]}</div>`;
-    }).join('');
-    return`<div class="habit-item">
-      <div class="habit-info">
-        <div class="habit-name">${escHtml(h.name)}</div>
-        <div class="habit-streak">${streak} day streak</div>
-      </div>
-      <div class="habit-week">${dayHTML}</div>
-      <div class="habit-del" onclick="deleteHabit('${h.id}')">✕</div>
-    </div>`;
-  }).join('');
+function deleteHabit(id){
+  habitList=habitList.filter(x=>x.id!==id);
+  saveHabits();renderHabits();
 }
 function calcStreak(completions){
   if(!completions.length)return 0;
   const sorted=[...completions].sort().reverse();
   const today=new Date();today.setHours(0,0,0,0);
   let streak=0,check=new Date(today);
-  while(true){
-    const ds=toDateStr(check);
+  for(let i=0;i<365;i++){
+    const ds=check.toISOString().slice(0,10);
     if(sorted.includes(ds)){streak++;check.setDate(check.getDate()-1);}
     else break;
   }
   return streak;
 }
-document.addEventListener('click',e=>{if(!e.target.closest('#ev-popup')&&!e.target.closest('.ev'))closePopup();});
+function renderHabits(){
+  const el=document.getElementById('habit-list');
+  if(!el)return;
+  if(!habitList.length){el.innerHTML='<div class="view-empty">Add a habit to start tracking</div>';return;}
+  const today=new Date();today.setHours(0,0,0,0);
+  const todayStr=today.toISOString().slice(0,10);
+  const dayLabels=['S','M','T','W','T','F','S'];
+  const wkStart=new Date(today);wkStart.setDate(today.getDate()-today.getDay());
+  const weekDays=Array.from({length:7},(_,i)=>{const d=new Date(wkStart);d.setDate(wkStart.getDate()+i);return d;});
+  el.innerHTML=habitList.map(h=>{
+    const streak=calcStreak(h.completions);
+    const dayHTML=weekDays.map((d,i)=>{
+      const ds=d.toISOString().slice(0,10);
+      const done=h.completions.includes(ds);
+      const isToday=ds===todayStr;
+      const isFuture=d>today;
+      return`<div class="habit-day${done?' done':''}${isToday?' today-col':''}" data-action="${isFuture?'':'habit-day'}" data-hid="${h.id}" data-ds="${ds}" style="${isFuture?'opacity:.35;cursor:default':''}">${dayLabels[i]}</div>`;
+    }).join('');
+    return`<div class="habit-item">
+      <div class="habit-info">
+        <div class="habit-name">${escHtml(h.name)}</div>
+        <div class="habit-streak">${streak>0?streak+' day streak':'Start today'}</div>
+      </div>
+      <div class="habit-week">${dayHTML}</div>
+      <button class="task-sched" data-action="sched" data-title="${escHtml(h.name)}" title="Schedule on calendar">📅</button>
+      <div class="habit-del" data-action="habit-del" data-hid="${h.id}">✕</div>
+    </div>`;
+  }).join('');
+}
+// ════════════════════════════════════════════════
+// TASK / HABIT EVENT DELEGATION
+// ════════════════════════════════════════════════
+document.addEventListener('click',e=>{
+  // close popup if clicking outside
+  if(!e.target.closest('#ev-popup')&&!e.target.closest('.ev'))closePopup();
+
+  const el=e.target.closest('[data-action]');
+  if(!el)return;
+  const action=el.dataset.action;
+  if(action==='toggle'){toggleTask(el.dataset.id);}
+  else if(action==='del'){deleteTask(el.dataset.id);}
+  else if(action==='habit-day'){toggleHabitDay(el.dataset.hid,el.dataset.ds);}
+  else if(action==='habit-del'){deleteHabit(el.dataset.hid);}
+  else if(action==='sched'){scheduleItem(el.dataset.title);}
+});
+
+// add-button event listeners (belt + suspenders alongside inline onclick)
+document.addEventListener('DOMContentLoaded',()=>{
+  const taskBtn=document.getElementById('task-add-btn');
+  if(taskBtn)taskBtn.addEventListener('click',addTask);
+  const habitBtn=document.getElementById('habit-add-btn');
+  if(habitBtn)habitBtn.addEventListener('click',addHabit);
+});
 
 // ════════════════════════════════════════════════
 // DELETE / ADD
