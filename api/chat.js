@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'ANTHROPIC_API_KEY not set in Vercel env vars' });
   }
 
-  const { message, today, time, dayOfWeek, userEvents = [], calendarEvents = [], templates = [] } = req.body;
+  const { message, today, time, dayOfWeek, userEvents = [], calendarEvents = [], templates = [], tasks = [], habits = [] } = req.body;
 
   const fmtEv = arr => arr.length === 0 ? 'None' : arr.map(e =>
     `- ${e.title}: ${e.date} ${minsToStr(e.start)}–${minsToStr(e.end)}`
@@ -32,41 +32,65 @@ export default async function handler(req, res) {
         return `- trigger "${t.alias}" → title: "${t.title}", category: ${t.cat}, duration: ${dur}`;
       }).join('\n');
 
-  const system = `You are a smart personal scheduling assistant embedded in a week-view calendar dashboard called Ora.
+  const fmtList = (arr, key) => arr.length === 0 ? 'None' : arr.map(x => `- ${x[key]}`).join('\n');
+
+  const system = `You are a smart personal assistant embedded in a dashboard called Ora. You manage a calendar, a task list, and habit tracker.
 
 Today is ${dayOfWeek}, ${today}. Current time is ${time}.
 
-SYNCED CALENDAR EVENTS (Google/Apple — already on the calendar, use as context for gaps):
+SYNCED CALENDAR EVENTS (read-only context):
 ${fmtEv(calendarEvents)}
 
-USER'S EXISTING DASHBOARD EVENTS:
+USER'S CALENDAR EVENTS:
 ${fmtEv(userEvents)}
+
+USER'S TASK LIST:
+${fmtList(tasks, 'title')}
+
+USER'S HABITS:
+${fmtList(habits, 'name')}
 
 USER'S SAVED EVENT TEMPLATES:
 ${fmtTemplates}
 When the user says something that matches a template trigger (e.g. "gym", "study block"), ALWAYS use the saved title and category from the template. Use the saved duration unless the user specifies a different one.
 
-When the user speaks naturally about their day, extract all schedulable items and return them as JSON.
+The user can ask you to:
+1. Add calendar EVENTS (things with a specific time/date)
+2. Add TASKS (to-do items without a specific time — "remind me to...", "add task...", "I need to...", "don't let me forget...")
+3. Add HABITS (recurring behaviors to track — "track habit...", "add habit...", "I want to start...")
+4. Any combination of the above in one message
 
-Rules:
-- start and end are minutes from midnight. Examples: 6:00 AM = 360, 9:00 AM = 540, 12:00 PM = 720, 3:00 PM = 900, 6:00 PM = 1080
+Rules for calendar events:
+- start and end are minutes from midnight. 6:00 AM = 360, 9:00 AM = 540, 12:00 PM = 720, 3:00 PM = 900, 6:00 PM = 1080
 - cat must be one of: work, gym, personal, social, study
-- If user gives a vague time ("around 3pm", "late afternoon"), use your best judgment
-- If no time is given, find a free gap in the existing schedule
-- Respect durations: "an hour and a half" = 90 minutes, "a couple hours" = 120 minutes
-- Do NOT re-add events already in the calendar — only new ones
-- If the user is just greeting or asking something (not scheduling), return an empty events array and respond conversationally
-- PAST TIME CHECK: If the user asks to schedule something today at a time that has already passed (e.g. it's 2 PM and they say "add gym at 11 AM"), do NOT silently add it. Instead set "events" to an empty array and use the "message" to flag it naturally — e.g. "Hey, 11 AM has already passed — did you mean tomorrow, or want me to pick a time later today?" Then wait for clarification.
-- MOVE/RESCHEDULE: If the user asks to move or reschedule an existing event, put it in "moves" (not "events"). Use the exact existing title. Leave "events" empty for pure reschedules.
+- If no time given, find a free gap in the existing schedule
+- Do NOT re-add events already in the calendar
+- PAST TIME CHECK: If asked to schedule something today at an already-passed time, set events to [] and flag it in "message"
+- MOVE/RESCHEDULE: Put in "moves" (not "events"), use the exact existing title
+
+Rules for tasks:
+- Extract MULTIPLE tasks if the user lists several (e.g. "add tasks: buy milk, call dentist, pay rent" → 3 tasks)
+- Tasks that sound like reminders count: "remind me to email Sarah" → task
+- Do NOT duplicate tasks already in the task list
+
+Rules for habits:
+- Extract MULTIPLE habits if listed
+- Do NOT duplicate habits already in the habit list
 
 Respond ONLY with valid JSON, no prose outside the JSON:
 {
-  "message": "Short friendly confirmation (1-2 sentences, conversational tone)",
+  "message": "Short friendly confirmation (1-2 sentences)",
   "events": [
     { "title": "Event name", "date": "YYYY-MM-DD", "start": 900, "end": 990, "cat": "gym" }
   ],
   "moves": [
     { "title": "Existing event title", "date": "YYYY-MM-DD", "start": 1050, "end": 1140 }
+  ],
+  "tasks": [
+    { "title": "Task title" }
+  ],
+  "habits": [
+    { "name": "Habit name" }
   ]
 }`;
 

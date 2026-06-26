@@ -927,11 +927,9 @@ function setView(v){
     const views=['week','agenda','tasks','habits'];
     el.classList.toggle('active',views[i]===v);
   });
-  // show/hide cal card + chat bar
+  // show/hide cal card (chat bar stays visible on all views)
   const calCard=document.querySelector('.cal-card');
-  const chatBar=document.getElementById('chat-bar');
   calCard.style.display=v==='week'?'flex':'none';
-  chatBar.style.display=v==='week'?'flex':'none';
   // show/hide view cards
   ['agenda','tasks','habits'].forEach(name=>{
     const el=document.getElementById('view-'+name);
@@ -1462,7 +1460,17 @@ async function sendToAI(transcript){
   const uEvs=events.filter(e=>{const d=new Date(e.date+'T12:00');return d>=ts&&d<=cutoff;});
   const cEvs=syncedEvents.filter(e=>{const d=new Date(e.date+'T12:00');return d>=ts&&d<=cutoff;});
   try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:transcript,today:dateStr(n),time:`${n.getHours()%12||12}:${String(n.getMinutes()).padStart(2,'0')} ${n.getHours()>=12?'PM':'AM'}`,dayOfWeek:DAYSLONG[n.getDay()],userEvents:uEvs.map(e=>({title:e.title,date:e.date,start:e.start,end:e.end})),calendarEvents:cEvs.map(e=>({title:e.title,date:e.date,start:e.start,end:e.end})),templates:templates.map(t=>({alias:t.alias,title:t.title,cat:t.cat,dur:t.dur}))})});
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      message:transcript,
+      today:dateStr(n),
+      time:`${n.getHours()%12||12}:${String(n.getMinutes()).padStart(2,'0')} ${n.getHours()>=12?'PM':'AM'}`,
+      dayOfWeek:DAYSLONG[n.getDay()],
+      userEvents:uEvs.map(e=>({title:e.title,date:e.date,start:e.start,end:e.end})),
+      calendarEvents:cEvs.map(e=>({title:e.title,date:e.date,start:e.start,end:e.end})),
+      templates:templates.map(t=>({alias:t.alias,title:t.title,cat:t.cat,dur:t.dur})),
+      tasks:taskList.slice(0,30).map(t=>({title:t.title,done:t.done})),
+      habits:habitList.slice(0,20).map(h=>({name:h.name}))
+    })});
     const data=await r.json();if(data.error)throw new Error(data.error);
     if(data.message){const m=document.getElementById('chat-msg');m.textContent=data.message;m.classList.remove('placeholder');document.getElementById('chat-close').style.display='inline';}
     if(Array.isArray(data.moves)&&data.moves.length>0){
@@ -1474,6 +1482,16 @@ async function sendToAI(transcript){
     }
     if(Array.isArray(data.events)&&data.events.length>0){
       data.events.forEach(ev=>{if(ev.title&&ev.date&&ev.start!=null)addEvent({title:ev.title,date:ev.date,start:ev.start,end:ev.end||ev.start+60,cat:ev.cat||'work'});});
+    }
+    if(Array.isArray(data.tasks)&&data.tasks.length>0){
+      data.tasks.forEach(t=>{if(t.title)taskList.push({id:Date.now()+'_'+Math.random().toString(36).slice(2),title:t.title,done:false});});
+      saveTasks();
+      if(currentView==='tasks')renderTasks();
+    }
+    if(Array.isArray(data.habits)&&data.habits.length>0){
+      data.habits.forEach(h=>{if(h.name)habitList.push({id:Date.now()+'_'+Math.random().toString(36).slice(2),name:h.name,completions:[]});});
+      saveHabits();
+      if(currentView==='habits')renderHabits();
     }
     if((data.moves?.length||data.events?.length)){
       const firstEv=data.moves?.[0]||data.events?.[0];
@@ -1492,8 +1510,49 @@ function cleanTitle(r){return r.replace(/^(?:a|an|the)\s+/i,'').trim().split(' '
 function guessCat(t){t=t.toLowerCase();if(/gym|workout|run|lift|exercise|yoga|sport|swim/.test(t))return'gym';if(/study|read|learn|class|lecture|homework|exam|course|block/.test(t))return'study';if(/meet|call|coffee|dinner|party|friend|hangout|date/.test(t))return'social';if(/personal|errand|chore|shop|doctor/.test(t))return'personal';return'work';}
 const DAY_RE='(today|tomorrow|monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun)';
 
+function splitItems(str){
+  // split on comma, semicolon, " and " (not at start of a word like "sandwiches")
+  return str.split(/,|;|\s+and\s+/).map(s=>s.replace(/^(a|an|the)\s+/i,'').trim()).filter(Boolean);
+}
 function processRegex(text){
   const t=text.toLowerCase().trim();
+
+  // TASK commands
+  if(/^(?:add|create|new|remind me to)\s+tasks?\s*:?\s*/i.test(t)){
+    const body=t.replace(/^(?:add|create|new|remind me to)\s+tasks?\s*:?\s*/i,'');
+    const items=splitItems(body);
+    if(items.length){
+      items.forEach(item=>{
+        const title=cleanTitle(item);
+        if(title)taskList.push({id:Date.now()+'_'+Math.random().toString(36).slice(2),title,done:false});
+      });
+      saveTasks();
+      if(currentView==='tasks')renderTasks();
+      toast(`✅ Added ${items.length} task${items.length>1?'s':''}`);
+    }
+    return;
+  }
+  if(/^remind me to\s+/i.test(t)){
+    const title=cleanTitle(t.replace(/^remind me to\s+/i,''));
+    if(title){taskList.push({id:Date.now()+'',title,done:false});saveTasks();if(currentView==='tasks')renderTasks();toast(`✅ Task added: "${title}"`);}
+    return;
+  }
+
+  // HABIT commands
+  if(/^(?:add|create|track|new)\s+habits?\s*:?\s*/i.test(t)){
+    const body=t.replace(/^(?:add|create|track|new)\s+habits?\s*:?\s*/i,'');
+    const items=splitItems(body);
+    if(items.length){
+      items.forEach(item=>{
+        const name=cleanTitle(item);
+        if(name)habitList.push({id:Date.now()+'_'+Math.random().toString(36).slice(2),name,completions:[]});
+      });
+      saveHabits();
+      if(currentView==='habits')renderHabits();
+      toast(`✅ Added ${items.length} habit${items.length>1?'s':''}`);
+    }
+    return;
+  }
   if(/^(?:delete|remove|cancel)\s+/i.test(t)){const body=t.replace(/^(?:delete|remove|cancel)\s+/i,'');const dm=body.match(new RegExp('(?:on\\s+)?'+DAY_RE+'(?:\\s|$)','i'));const dayFilter=dm?parseDayToDate(dm[1]):null;const query=body.replace(dm?.[0]||'','').trim();const before=events.length;events=events.filter(ev=>{const hit=ev.title.toLowerCase().includes(query);if(!hit)return true;if(dayFilter&&ev.date!==dayFilter)return true;return false;});if(events.length<before){saveEvents();render();toast(`🗑 Deleted "${cleanTitle(query)}"`);}else toast(`❓ No event found matching "${query}"`);return;}
   if(/^(?:move|reschedule)\s+/i.test(t)){const m=t.match(new RegExp('^(?:move|reschedule)\\s+(.+?)\\s+to\\s+'+DAY_RE+'(?:\\s+(?:at\\s+)?(\\d{1,2}(?::\\d{2})?\\s*(?:am|pm)?))?','i'));if(m){const found=events.find(ev=>ev.title.toLowerCase().includes(m[1].trim()));if(found){const nd=parseDayToDate(m[2]);const ns=m[3]?parseTimeMins(m[3]):found.start;const dur=found.end-found.start;found.date=nd||found.date;found.start=ns;found.end=ns+dur;saveEvents();render();toast(`✅ Moved "${found.title}"`);}}return;}
   if(/^(?:add|create|schedule|put|block)\s+/i.test(t)){let body=t.replace(/^(?:add|create|schedule|put|block out|block)\s+/i,'');const dur=extractDuration(body);let bd=dur?stripDuration(body):body;const dm=bd.match(new RegExp('(?:on\\s+)?'+DAY_RE+'(?:\\s|$)','i'));const date=dm?parseDayToDate(dm[1]):dateStr(new Date());if(dm)bd=bd.replace(dm[0],' ').trim();const atM=bd.match(/(?:at\s+)(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)/i);const start=atM?parseTimeMins(atM[1]):9*60;if(atM)bd=bd.replace(atM[0],'').trim();const rawTitle=cleanTitle(bd.replace(/\s+/g,' ').trim())||'Event';
