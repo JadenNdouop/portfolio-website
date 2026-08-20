@@ -6,332 +6,191 @@
   <title>Jaden Ndouop</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --navy:        #1E3A5F;
-      --navy-light:  #2D5282;
-      --slate:       #334155;
-      --slate-mid:   #64748B;
-      --slate-light: #94A3B8;
-      --border:      #E2E8F0;
-      --bg:          #F8FAFC;
-      --white:       #FFFFFF;
-      --text:        #0F172A;
-      --sidebar-w:   260px;
-      --radius:      12px;
+      --navy:       #1a3353;
+      --navy-mid:   #2d5282;
+      --blue-soft:  #EFF6FF;
+      --blue-border:#BFDBFE;
+      --slate:      #334155;
+      --muted:      #64748B;
+      --faint:      #94A3B8;
+      --border:     #E2E8F0;
+      --bg:         #F8FAFC;
+      --surface:    #FFFFFF;
+      --text:       #0F172A;
+      --sidebar-w:  268px;
+      --r:          14px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ─────────────────────────────────────
+    /* ═══════════════════════════════════
        SIDEBAR
-    ───────────────────────────────────── */
+    ═══════════════════════════════════ */
     #sidebar {
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
+      position: fixed; top: 0; left: 0; bottom: 0;
       width: var(--sidebar-w);
-      background: var(--white);
+      background: var(--surface);
       border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 40px 28px;
+      display: flex; flex-direction: column;
+      padding: 36px 24px 32px;
       z-index: 50;
     }
 
-    .sidebar-name {
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: var(--navy);
-      margin-bottom: 4px;
-      text-decoration: none;
+    .sb-brand { margin-bottom: 32px; }
+    .sb-name {
+      display: block;
+      font-size: 1rem; font-weight: 700; letter-spacing: -0.02em;
+      color: var(--navy); text-decoration: none; line-height: 1.2;
+      margin-bottom: 2px;
     }
-    .sidebar-title {
-      font-size: 0.78rem;
-      color: var(--slate-light);
-      margin-bottom: 40px;
-      line-height: 1.5;
+    .sb-role {
+      font-size: 0.75rem; color: var(--faint); line-height: 1.4;
     }
 
-    .sidebar-nav {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      flex: 1;
-    }
-    .sidebar-nav li a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      color: var(--slate-mid);
-      text-decoration: none;
-      transition: all 0.18s;
-      position: relative;
-    }
-    .sidebar-nav li a:hover {
-      color: var(--navy);
-      background: var(--bg);
-    }
-    .sidebar-nav li a.active {
-      color: var(--navy);
-      background: #EFF6FF;
-      font-weight: 600;
-    }
-    .nav-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--border);
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-    .sidebar-nav li a.active .nav-dot { background: var(--navy); }
+    .sb-nav { flex: 1; display: flex; flex-direction: column; gap: 1px; }
 
-    .sidebar-chapter-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--slate-light);
-      padding: 16px 12px 6px;
+    .sb-section-label {
+      font-size: 0.63rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--faint);
+      padding: 14px 10px 6px;
     }
 
-    .sidebar-footer {
-      padding-top: 28px;
-      border-top: 1px solid var(--border);
+    .sb-nav a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 8px;
+      font-size: 0.85rem; color: var(--muted);
+      text-decoration: none; transition: all 0.15s;
     }
-    .sidebar-footer p {
-      font-size: 0.75rem;
-      color: var(--slate-light);
-      line-height: 1.5;
-      margin-bottom: 12px;
+    .sb-nav a:hover { color: var(--navy); background: var(--bg); }
+    .sb-nav a.active {
+      color: var(--navy); background: var(--blue-soft); font-weight: 600;
     }
-    .sidebar-links {
-      display: flex;
-      gap: 12px;
+    .sb-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--border); flex-shrink: 0; transition: background 0.15s;
     }
-    .sidebar-links a {
-      font-size: 0.78rem;
-      color: var(--slate-mid);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .sidebar-links a:hover { color: var(--navy); }
+    .sb-nav a.active .sb-dot { background: var(--navy); }
 
-    /* ─────────────────────────────────────
-       MAIN CONTENT
-    ───────────────────────────────────── */
-    #main {
-      margin-left: var(--sidebar-w);
-      min-height: 100vh;
+    .sb-footer {
+      padding-top: 24px; border-top: 1px solid var(--border);
     }
+    .sb-footer-text {
+      font-size: 0.73rem; color: var(--faint); line-height: 1.6; margin-bottom: 14px;
+    }
+    .sb-footer-links { display: flex; gap: 14px; }
+    .sb-footer-links a {
+      font-size: 0.75rem; color: var(--muted); text-decoration: none;
+      transition: color 0.15s;
+    }
+    .sb-footer-links a:hover { color: var(--navy); }
 
-    /* Each chapter section */
-    .chapter {
-      padding: 96px 72px;
+    /* ═══════════════════════════════════
+       MAIN
+    ═══════════════════════════════════ */
+    #main { margin-left: var(--sidebar-w); }
+
+    /* ── Section wrapper ── */
+    .sec {
+      padding: 88px 72px;
       border-bottom: 1px solid var(--border);
-      max-width: 780px;
     }
-    .chapter:last-of-type { border-bottom: none; }
+    .sec:last-child { border-bottom: none; }
+    .sec-inner { max-width: 760px; }
 
-    /* Chapter intro label */
-    .chapter-eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
+    /* ── Eyebrow ── */
+    .eyebrow {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 22px;
     }
-    .chapter-num {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--slate-light);
+    .eyebrow-num {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--faint);
     }
-    .chapter-line {
-      flex: 1;
-      max-width: 40px;
-      height: 1px;
-      background: var(--border);
-    }
-    .chapter-tag {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--navy);
-      background: #EFF6FF;
-      border: 1px solid #BFDBFE;
-      padding: 3px 10px;
-      border-radius: 999px;
+    .eyebrow-rule { width: 32px; height: 1px; background: var(--border); }
+    .eyebrow-tag {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--navy);
+      background: var(--blue-soft); border: 1px solid var(--blue-border);
+      padding: 3px 10px; border-radius: 999px;
     }
 
-    .chapter-title {
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      color: var(--text);
-      margin-bottom: 24px;
+    /* ── Headings ── */
+    .h-xl {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 700; letter-spacing: -0.035em;
+      line-height: 1.08; color: var(--text);
     }
-    .chapter-title em {
-      font-style: normal;
-      color: var(--navy);
+    .h-xl em { font-style: normal; color: var(--navy); }
+
+    .h-lg {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700; letter-spacing: -0.03em;
+      line-height: 1.1; color: var(--text);
+    }
+    .h-lg em { font-style: normal; color: var(--navy); }
+
+    /* ── Body text ── */
+    .body-stack { display: flex; flex-direction: column; gap: 16px; margin-top: 28px; }
+    .body-stack p {
+      font-size: 1.02rem; line-height: 1.82; color: var(--slate);
+    }
+    .body-stack strong { color: var(--text); font-weight: 600; }
+
+    /* ── Pull quote ── */
+    .quote {
+      border-left: 2px solid var(--navy);
+      padding: 2px 0 2px 18px;
+      font-size: 1.05rem; font-weight: 500; font-style: italic;
+      color: var(--navy); line-height: 1.65;
+      margin: 4px 0;
     }
 
-    .chapter-body {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .chapter-body p {
-      font-size: 1.05rem;
-      line-height: 1.8;
-      color: var(--slate);
-    }
-    .chapter-body strong { color: var(--text); font-weight: 600; }
-
-    /* Pull quote */
-    .pull-quote {
-      border-left: 3px solid var(--navy);
-      padding: 4px 0 4px 20px;
-      margin: 8px 0;
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--navy);
-      line-height: 1.6;
-    }
-
-    /* Info pills row */
-    .info-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .info-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--slate);
-      background: var(--white);
+    /* ── Pill row ── */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .pill {
+      font-size: 0.78rem; font-weight: 500;
+      padding: 5px 13px; border-radius: 999px;
       border: 1px solid var(--border);
-      padding: 6px 14px;
-      border-radius: 999px;
+      color: var(--slate); background: var(--surface);
     }
 
-    /* Credential card */
-    .credential {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-top: 4px;
+    /* ── Credential card ── */
+    .cred {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 18px 20px;
       transition: box-shadow 0.2s;
     }
-    .credential:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .cred:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
     .cred-icon {
-      width: 44px; height: 44px;
-      border-radius: 10px;
+      width: 42px; height: 42px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
+      font-size: 1.2rem; flex-shrink: 0;
     }
-    .cred-body { flex: 1; }
-    .cred-degree { font-size: 0.95rem; font-weight: 600; color: var(--text); }
-    .cred-school { font-size: 0.8rem; color: var(--slate-mid); margin-top: 2px; }
+    .cred-degree { font-size: 0.92rem; font-weight: 600; color: var(--text); }
+    .cred-school { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
     .cred-badge {
-      font-size: 0.72rem; font-weight: 600;
-      color: var(--navy); background: #EFF6FF;
-      border: 1px solid #BFDBFE;
+      margin-left: auto; white-space: nowrap;
+      font-size: 0.7rem; font-weight: 600; color: var(--navy);
+      background: var(--blue-soft); border: 1px solid var(--blue-border);
       padding: 3px 10px; border-radius: 999px;
-      white-space: nowrap;
     }
 
-    /* ── Projects grid ── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-top: 8px;
-    }
-    .proj-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 22px;
-      display: flex; flex-direction: column; gap: 12px;
-      text-decoration: none; color: inherit;
-      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-    }
-    .proj-card:not(.placeholder):hover {
-      border-color: var(--navy);
-      box-shadow: 0 6px 24px rgba(30,58,95,0.1);
-      transform: translateY(-2px);
-    }
-    .proj-card.placeholder {
-      border-style: dashed; opacity: 0.4; pointer-events: none;
-    }
-    .proj-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .proj-icon {
-      width: 40px; height: 40px; border-radius: 9px;
-      background: linear-gradient(135deg, #DBEAFE, #1E3A5F);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-    }
-    .proj-card.placeholder .proj-icon { background: var(--border); }
-    .proj-arrow { color: var(--slate-light); transition: all 0.2s; }
-    .proj-card:hover .proj-arrow { color: var(--navy); transform: translate(2px,-2px); }
-    .proj-name { font-size: 0.95rem; font-weight: 650; color: var(--text); }
-    .proj-desc { font-size: 0.82rem; line-height: 1.6; color: var(--slate-mid); }
-    .proj-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-    .proj-tag {
-      font-size: 0.68rem; font-weight: 500;
-      padding: 2px 9px; border-radius: 999px;
-      background: var(--bg); border: 1px solid var(--border);
-      color: var(--slate);
-    }
-
-    /* ── Contact ── */
-    #contact.chapter {
-      background: var(--white);
-    }
-    .contact-cta {
-      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px;
-    }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 22px; border-radius: var(--radius);
-      font-size: 0.875rem; font-weight: 500;
-      text-decoration: none; transition: all 0.2s;
-    }
-    .btn-navy { background: var(--navy); color: white; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
-    .btn-navy:hover { background: var(--navy-light); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(30,58,95,0.25); }
-    .btn-ghost { border: 1.5px solid var(--border); color: var(--navy); }
-    .btn-ghost:hover { border-color: var(--navy); background: #EFF6FF; }
-
-    /* ── Hero typing ── */
-    .hero-typing {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 0.9rem; color: var(--slate-mid);
-      margin-bottom: 24px;
+    /* ── Typing ── */
+    .typing-line {
+      font-size: 0.88rem; color: var(--muted);
+      margin-bottom: 24px; display: flex; align-items: center; gap: 8px;
     }
     #typing-text {
       color: var(--navy); font-weight: 600;
@@ -344,6 +203,126 @@
       50%      { border-color: transparent; }
     }
 
+    /* ── Buttons ── */
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 11px 22px; border-radius: var(--r);
+      font-size: 0.875rem; font-weight: 500;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--navy); color: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+    .btn-primary:hover {
+      background: var(--navy-mid); transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(26,51,83,0.28);
+    }
+    .btn-outline { border: 1.5px solid var(--border); color: var(--navy); }
+    .btn-outline:hover { border-color: var(--navy); background: var(--blue-soft); }
+
+    /* ═══════════════════════════════════
+       BENTO GRID
+    ═══════════════════════════════════ */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    /* Card base */
+    .bc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 26px 24px;
+      display: flex; flex-direction: column; gap: 12px;
+      text-decoration: none; color: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .bc:hover {
+      border-color: var(--navy);
+      box-shadow: 0 8px 28px rgba(26,51,83,0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Accent stripe on hover */
+    .bc::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; opacity: 0; transition: opacity 0.2s;
+    }
+    .bc:hover::before { opacity: 1; }
+
+    /* Featured — spans 2 cols */
+    .bc-featured {
+      grid-column: span 2;
+      background: var(--navy);
+      border-color: var(--navy);
+      color: white;
+      padding: 36px 32px;
+    }
+    .bc-featured::before { display: none; }
+    .bc-featured:hover {
+      background: var(--navy-mid);
+      border-color: var(--navy-mid);
+      box-shadow: 0 12px 40px rgba(26,51,83,0.3);
+    }
+    .bc-featured .bc-name { color: white; font-size: 1.3rem; }
+    .bc-featured .bc-desc { color: rgba(255,255,255,0.72); font-size: 0.92rem; }
+    .bc-featured .bc-tag { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.85); }
+    .bc-featured .bc-arrow { color: rgba(255,255,255,0.5); }
+    .bc-featured:hover .bc-arrow { color: white; }
+
+    /* Wide — spans full 3 cols */
+    .bc-wide { grid-column: span 3; }
+
+    /* Accent colors (stripe + icon bg) */
+    .bc-blue  .bc::before { background: linear-gradient(90deg,#3B82F6,#1E3A5F); }
+    .bc-purple::before { background: linear-gradient(90deg,#8B5CF6,#4C1D95); }
+    .bc-green ::before { background: linear-gradient(90deg,#10B981,#065F46); }
+    .bc-orange::before { background: linear-gradient(90deg,#F59E0B,#B45309); }
+    .bc-rose  ::before { background: linear-gradient(90deg,#F43F5E,#9F1239); }
+    .bc-teal  ::before { background: linear-gradient(90deg,#14B8A6,#134E4A); }
+    .bc-indigo::before { background: linear-gradient(90deg,#6366F1,#312E81); }
+
+    .bc-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .bc-icon {
+      width: 40px; height: 40px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem; flex-shrink: 0;
+    }
+    .bc-arrow {
+      font-size: 1rem; color: var(--faint);
+      transition: color 0.2s, transform 0.2s;
+    }
+    .bc:hover .bc-arrow { color: var(--navy); transform: translate(2px,-2px); }
+
+    .bc-category {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--faint);
+    }
+    .bc-featured .bc-category { color: rgba(255,255,255,0.45); }
+
+    .bc-name {
+      font-size: 0.95rem; font-weight: 650;
+      color: var(--text); line-height: 1.3;
+    }
+    .bc-desc {
+      font-size: 0.82rem; line-height: 1.62;
+      color: var(--muted); flex: 1;
+    }
+    .bc-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+    .bc-tag {
+      font-size: 0.67rem; font-weight: 500;
+      padding: 2px 9px; border-radius: 999px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--slate);
+    }
+
     /* ── Scroll reveal ── */
     .reveal {
       opacity: 0; transform: translateY(20px);
@@ -352,358 +331,354 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ── Mobile ── */
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       #sidebar { display: none; }
       #main { margin-left: 0; }
-      .chapter { padding: 60px 24px; }
-      .projects-grid { grid-template-columns: 1fr; }
+      .sec { padding: 64px 24px; }
+      .bento { grid-template-columns: 1fr; }
+      .bc-featured, .bc-wide { grid-column: span 1; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════ SIDEBAR ═══════════════ -->
-  <aside id="sidebar">
-    <a href="#intro" class="sidebar-name">Jaden Ndouop</a>
-    <p class="sidebar-title">Founder & CEO, StudyWiser</p>
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside id="sidebar">
+  <div class="sb-brand">
+    <a href="#intro" class="sb-name">Jaden Ndouop</a>
+    <span class="sb-role">Founder & CEO, StudyWiser</span>
+  </div>
 
-    <ul class="sidebar-nav">
-      <li><a href="#intro" class="active"><span class="nav-dot"></span> Intro</a></li>
+  <nav class="sb-nav">
+    <a href="#intro" class="active"><span class="sb-dot"></span>Intro</a>
 
-      <li class="sidebar-chapter-label">The story</li>
-      <li><a href="#chapter-1"><span class="nav-dot"></span> The Mind</a></li>
-      <li><a href="#chapter-2"><span class="nav-dot"></span> The Data</a></li>
-      <li><a href="#chapter-3"><span class="nav-dot"></span> The Build</a></li>
+    <div class="sb-section-label">The story</div>
+    <a href="#ch1"><span class="sb-dot"></span>The Mind</a>
+    <a href="#ch2"><span class="sb-dot"></span>The Data</a>
+    <a href="#ch3"><span class="sb-dot"></span>The Build</a>
 
-      <li class="sidebar-chapter-label">Work</li>
-      <li><a href="#projects"><span class="nav-dot"></span> Projects</a></li>
-      <li><a href="#contact"><span class="nav-dot"></span> Contact</a></li>
-    </ul>
+    <div class="sb-section-label">Work</div>
+    <a href="#projects"><span class="sb-dot"></span>Projects</a>
+    <a href="#contact"><span class="sb-dot"></span>Contact</a>
+  </nav>
 
-    <div class="sidebar-footer">
-      <p>Based in Massachusetts.<br/>Open to conversations.</p>
-      <div class="sidebar-links">
-        <a href="mailto:info@studywiser.org">Email</a>
-        <a href="https://studywiser.org" target="_blank">StudyWiser</a>
-      </div>
+  <div class="sb-footer">
+    <p class="sb-footer-text">Based in Massachusetts.<br/>Open to conversations.</p>
+    <div class="sb-footer-links">
+      <a href="mailto:info@studywiser.org">Email</a>
+      <a href="https://studywiser.org" target="_blank">StudyWiser ↗</a>
     </div>
-  </aside>
+  </div>
+</aside>
 
-  <!-- ═══════════════ MAIN ═══════════════ -->
-  <main id="main">
+<!-- ═══════════ MAIN ═══════════ -->
+<main id="main">
 
-    <!-- INTRO -->
-    <section class="chapter" id="intro">
-      <div class="hero-typing">
+  <!-- INTRO -->
+  <section class="sec" id="intro">
+    <div class="sec-inner">
+      <div class="typing-line">
         <span>Currently —</span>
         <span id="typing-text"></span>
       </div>
-      <h1 class="chapter-title reveal">
-        I turn how people<br/>think into<br/><em>things that work.</em>
+
+      <h1 class="h-xl reveal">
+        I turn how<br/>people think into<br/><em>things that work.</em>
       </h1>
-      <div class="chapter-body reveal" style="transition-delay:0.1s">
-        <p>
-          I'm Jaden — a psychologist, data scientist, and founder. My work lives at the intersection of human behavior and technology, and I've spent years building the skills to bridge both.
-        </p>
-        <p>
-          This page tells that story — three chapters that led to one mission: making education work better for the people inside it.
-        </p>
-        <div class="info-row">
-          <span class="info-pill">🎓 Psychology → Data Science → EdTech</span>
-          <span class="info-pill">📍 Massachusetts</span>
-          <span class="info-pill">🚀 Founder & CEO, StudyWiser</span>
+
+      <div class="body-stack reveal" style="transition-delay:.1s">
+        <p>I'm Jaden — a psychologist, data scientist, and founder. My work lives at the intersection of human behavior and technology, built on a foundation that most builders skip: understanding people first.</p>
+        <div class="pill-row">
+          <span class="pill">🧠 Psychology</span>
+          <span class="pill">📊 Data Science</span>
+          <span class="pill">🚀 EdTech Founder</span>
+          <span class="pill">📍 Massachusetts</span>
         </div>
       </div>
-    </section>
 
-    <!-- CHAPTER 1 — THE MIND -->
-    <section class="chapter" id="chapter-1">
-      <div class="chapter-eyebrow">
-        <span class="chapter-num">Chapter 01</span>
-        <span class="chapter-line"></span>
-        <span class="chapter-tag">Psychology</span>
+      <div class="btn-row reveal" style="transition-delay:.18s">
+        <a href="#projects" class="btn btn-primary">View my work →</a>
+        <a href="#contact" class="btn btn-outline">Get in touch</a>
       </div>
-      <h2 class="chapter-title reveal">The Mind</h2>
-      <div class="chapter-body reveal" style="transition-delay:0.08s">
-        <p>
-          It started with a simple fascination: <strong>why do people do what they do?</strong> That question led me to study psychology at UMass Lowell — where I learned how to observe, question, and understand human behavior at a fundamental level.
-        </p>
-        <div class="pull-quote">
-          "The most powerful technology in the world is still the human brain. I wanted to understand it first."
-        </div>
-        <p>
-          I learned research methods, cognitive science, and behavioral theory — frameworks that I still reach for every single day when I'm deciding how to design a product, write a message, or solve a problem.
-        </p>
+    </div>
+  </section>
 
-        <div class="credential reveal" style="transition-delay:0.15s">
-          <div class="cred-icon" style="background: linear-gradient(135deg,#E0E7FF,#4338CA);">🧠</div>
-          <div class="cred-body">
+  <!-- CH 1 — THE MIND -->
+  <section class="sec" id="ch1">
+    <div class="sec-inner">
+      <div class="eyebrow">
+        <span class="eyebrow-num">Chapter 01</span>
+        <span class="eyebrow-rule"></span>
+        <span class="eyebrow-tag">Psychology</span>
+      </div>
+      <h2 class="h-lg reveal">The Mind</h2>
+      <div class="body-stack reveal" style="transition-delay:.08s">
+        <p>It started with one question: <strong>why do people do what they do?</strong> That question led me to study psychology at UMass Lowell — where I learned to observe, question, and understand human behavior at a fundamental level.</p>
+        <p class="quote">"The most powerful technology in the world is still the human brain. I wanted to understand it before I tried to build anything else."</p>
+        <p>I left with research methods, cognitive science, and behavioral frameworks — tools I still reach for every day when designing products or solving problems.</p>
+        <div class="cred reveal" style="transition-delay:.15s">
+          <div class="cred-icon" style="background:linear-gradient(135deg,#E0E7FF,#4338CA);">🧠</div>
+          <div>
             <div class="cred-degree">B.A. in Psychology</div>
             <div class="cred-school">University of Massachusetts Lowell</div>
           </div>
           <span class="cred-badge">Undergraduate</span>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CHAPTER 2 — THE DATA -->
-    <section class="chapter" id="chapter-2">
-      <div class="chapter-eyebrow">
-        <span class="chapter-num">Chapter 02</span>
-        <span class="chapter-line"></span>
-        <span class="chapter-tag">Data Science</span>
+  <!-- CH 2 — THE DATA -->
+  <section class="sec" id="ch2">
+    <div class="sec-inner">
+      <div class="eyebrow">
+        <span class="eyebrow-num">Chapter 02</span>
+        <span class="eyebrow-rule"></span>
+        <span class="eyebrow-tag">Data Science</span>
       </div>
-      <h2 class="chapter-title reveal">The Data</h2>
-      <div class="chapter-body reveal" style="transition-delay:0.08s">
-        <p>
-          Understanding people is one thing. Being able to <strong>measure, model, and act on that understanding at scale</strong> is another. That's what brought me to data science at Boston University.
-        </p>
-        <p>
-          I learned machine learning, statistical modeling, and how to turn raw information into decisions. But more importantly, I learned how to ask the right questions — because the quality of your data analysis depends entirely on the quality of your thinking.
-        </p>
-        <div class="pull-quote">
-          "Data tells you what happened. Psychology tells you why. You need both."
-        </div>
-
-        <div class="credential reveal" style="transition-delay:0.15s">
-          <div class="cred-icon" style="background: linear-gradient(135deg,#DBEAFE,#1E40AF);">📊</div>
-          <div class="cred-body">
+      <h2 class="h-lg reveal">The Data</h2>
+      <div class="body-stack reveal" style="transition-delay:.08s">
+        <p>Understanding people is one thing. Being able to <strong>measure, model, and act on that understanding at scale</strong> is another. That's what brought me to data science at Boston University.</p>
+        <p class="quote">"Data tells you what happened. Psychology tells you why. You need both to build something that actually works."</p>
+        <p>Machine learning, statistical modeling, and pipelines — but more importantly, the discipline of asking better questions before writing a single line of code.</p>
+        <div class="cred reveal" style="transition-delay:.15s">
+          <div class="cred-icon" style="background:linear-gradient(135deg,#DBEAFE,#1E40AF);">📊</div>
+          <div>
             <div class="cred-degree">M.S. in Data Science</div>
             <div class="cred-school">Boston University</div>
           </div>
           <span class="cred-badge">Graduate</span>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CHAPTER 3 — THE BUILD -->
-    <section class="chapter" id="chapter-3">
-      <div class="chapter-eyebrow">
-        <span class="chapter-num">Chapter 03</span>
-        <span class="chapter-line"></span>
-        <span class="chapter-tag">Founder</span>
+  <!-- CH 3 — THE BUILD -->
+  <section class="sec" id="ch3">
+    <div class="sec-inner">
+      <div class="eyebrow">
+        <span class="eyebrow-num">Chapter 03</span>
+        <span class="eyebrow-rule"></span>
+        <span class="eyebrow-tag">Founder</span>
       </div>
-      <h2 class="chapter-title reveal">The Build</h2>
-      <div class="chapter-body reveal" style="transition-delay:0.08s">
-        <p>
-          At some point, I stopped asking "what should someone build here?" and started asking <strong>"why don't I just build it?"</strong> That shift led to StudyWiser.
-        </p>
-        <p>
-          Education has a data problem and a behavior problem. Students are given information but not the tools to actually retain it. I saw an opportunity to apply everything I'd learned — behavioral science, data, and product thinking — to fix that.
-        </p>
-        <div class="pull-quote">
-          "StudyWiser isn't a study app. It's what happens when you take learning science seriously."
-        </div>
-        <p>
-          As Founder & CEO, I oversee product, strategy, and vision. The goal is simple: help students learn smarter, not harder.
-        </p>
-
-        <div class="credential reveal" style="transition-delay:0.15s">
-          <div class="cred-icon" style="background: linear-gradient(135deg,#D1FAE5,#065F46);">🚀</div>
-          <div class="cred-body">
-            <div class="cred-degree">Founder & CEO</div>
-            <div class="cred-school">StudyWiser · studywiser.org</div>
+      <h2 class="h-lg reveal">The Build</h2>
+      <div class="body-stack reveal" style="transition-delay:.08s">
+        <p>At some point I stopped asking "what should someone build here?" and started asking <strong>"why don't I just build it?"</strong></p>
+        <p>Education has a data problem and a behavior problem. Students are handed information without the science of how to actually retain it. I saw an opportunity to apply everything — behavioral science, data, product thinking — and founded StudyWiser.</p>
+        <p class="quote">"StudyWiser isn't a study app. It's what happens when you take learning science seriously."</p>
+        <div class="cred reveal" style="transition-delay:.15s">
+          <div class="cred-icon" style="background:linear-gradient(135deg,#D1FAE5,#065F46);">🚀</div>
+          <div>
+            <div class="cred-degree">Founder & CEO — StudyWiser</div>
+            <div class="cred-school">studywiser.org</div>
           </div>
           <span class="cred-badge">Present</span>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- PROJECTS -->
-    <section class="chapter" id="projects">
-      <div class="chapter-eyebrow">
-        <span class="chapter-num">Work</span>
-        <span class="chapter-line"></span>
-        <span class="chapter-tag">Projects</span>
+  <!-- PROJECTS -->
+  <section class="sec" id="projects">
+    <div class="sec-inner" style="max-width:900px">
+      <div class="eyebrow">
+        <span class="eyebrow-num">Work</span>
+        <span class="eyebrow-rule"></span>
+        <span class="eyebrow-tag">Projects</span>
       </div>
-      <h2 class="chapter-title reveal">What I'm building</h2>
-      <div class="chapter-body reveal" style="transition-delay:0.08s">
-        <p>A growing collection of work at the edge of psychology, data, and education.</p>
+      <h2 class="h-lg reveal">What I've built</h2>
 
-        <div class="projects-grid">
+      <div class="bento reveal" style="transition-delay:.08s">
 
-          <!-- 1 -->
-          <a href="https://studywiser.org" target="_blank" class="proj-card reveal">
-            <div class="proj-header">
-              <div class="proj-icon" style="background:linear-gradient(135deg,#DBEAFE,#1E3A5F);">📚</div>
-              <span class="proj-arrow">↗</span>
-            </div>
-            <div class="proj-name">StudyWiser Business Operations Platform</div>
-            <div class="proj-desc">End-to-end operational platform powering StudyWiser — from internal workflows to student-facing product infrastructure.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">Business</span>
-              <span class="proj-tag">EdTech</span>
-              <span class="proj-tag">Founder</span>
-            </div>
-          </a>
-
-          <!-- 2 -->
-          <div class="proj-card reveal" style="transition-delay:0.06s">
-            <div class="proj-header">
-              <div class="proj-icon" style="background:linear-gradient(135deg,#E0E7FF,#3730A3);">⚙️</div>
-            </div>
-            <div class="proj-name">ERP Business Management System</div>
-            <div class="proj-desc">Full-featured enterprise resource planning system designed to streamline operations, resource allocation, and business reporting.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">Business</span>
-              <span class="proj-tag">ERP</span>
-              <span class="proj-tag">Systems Design</span>
-            </div>
+        <!-- Featured: StudyWiser -->
+        <a href="https://studywiser.org" target="_blank" class="bc bc-featured">
+          <div class="bc-header">
+            <div class="bc-icon" style="background:rgba(255,255,255,0.15);">📚</div>
+            <span class="bc-arrow">↗</span>
           </div>
-
-          <!-- 3 -->
-          <div class="proj-card reveal" style="transition-delay:0.12s">
-            <div class="proj-header">
-              <div class="proj-icon" style="background:linear-gradient(135deg,#ECFDF5,#065F46);">🔍</div>
-            </div>
-            <div class="proj-name">Customer Intelligence Platform</div>
-            <div class="proj-desc">Data pipeline and analytics platform for understanding customer behavior, segmentation, and churn prediction.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">Data Science</span>
-              <span class="proj-tag">Analytics</span>
-              <span class="proj-tag">ML</span>
-            </div>
+          <div class="bc-category">EdTech · Founder</div>
+          <div class="bc-name">StudyWiser Business Operations Platform</div>
+          <div class="bc-desc">The platform powering StudyWiser — from internal operations to the student-facing product. Built on behavioral science: spaced repetition, cognitive load theory, and personalized learning paths.</div>
+          <div class="bc-tags">
+            <span class="bc-tag">EdTech</span>
+            <span class="bc-tag">Founder</span>
+            <span class="bc-tag">Learning Science</span>
+            <span class="bc-tag">Full-Stack</span>
           </div>
+        </a>
 
-          <!-- 4 -->
-          <div class="proj-card reveal" style="transition-delay:0.18s">
-            <div class="proj-header">
-              <div class="proj-icon" style="background:linear-gradient(135deg,#FDF4FF,#7E22CE);">🤖</div>
-            </div>
-            <div class="proj-name">AI Business Analyst</div>
-            <div class="proj-desc">LLM-powered analyst tool that ingests business data and surfaces insights, summaries, and strategic recommendations in natural language.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">AI Engineering</span>
-              <span class="proj-tag">LLM</span>
-              <span class="proj-tag">NLP</span>
-            </div>
+        <!-- AI Business Analyst -->
+        <div class="bc bc-purple">
+          <div class="bc-header">
+            <div class="bc-icon" style="background:linear-gradient(135deg,#EDE9FE,#7C3AED);">🤖</div>
           </div>
-
-          <!-- 5 -->
-          <div class="proj-card reveal" style="transition-delay:0.24s">
-            <div class="proj-header">
-              <div class="proj-icon" style="background:linear-gradient(135deg,#FFF1F2,#9F1239);">🎨</div>
-            </div>
-            <div class="proj-name">StudyWiser UX Research & Redesign</div>
-            <div class="proj-desc">End-to-end UX research project — user interviews, usability testing, and a full product redesign grounded in behavioral insights.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">UX/UI</span>
-              <span class="proj-tag">Research</span>
-              <span class="proj-tag">Product</span>
-            </div>
+          <div class="bc-category">AI Engineering</div>
+          <div class="bc-name">AI Business Analyst</div>
+          <div class="bc-desc">LLM-powered analyst that ingests business data and surfaces insights in natural language.</div>
+          <div class="bc-tags">
+            <span class="bc-tag">LLM</span><span class="bc-tag">NLP</span><span class="bc-tag">AI</span>
           </div>
-
-          <!-- 6 -->
-          <div class="proj-card reveal" style="transition-delay:0.3s">
-            <div class="proj-header">
-              <div class="proj-icon" style="background:linear-gradient(135deg,#F0FDF4,#166534);">💻</div>
-            </div>
-            <div class="proj-name">Portfolio Website</div>
-            <div class="proj-desc">This site — designed and built from scratch to tell a story, not just list credentials. Custom HTML, CSS, and vanilla JS.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">Web</span>
-              <span class="proj-tag">Design</span>
-              <span class="proj-tag">HTML/CSS</span>
-            </div>
-          </div>
-
-          <!-- 7 -->
-          <div class="proj-card reveal" style="transition-delay:0.36s">
-            <div class="proj-header">
-              <div class="proj-icon" style="background:linear-gradient(135deg,#FFF7ED,#C2410C);">📰</div>
-            </div>
-            <div class="proj-name">HuffPost News Category Classification</div>
-            <div class="proj-desc">NLP and deep learning model trained to classify news articles into categories. Explored LSTM, BERT, and transformer-based approaches.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">NLP</span>
-              <span class="proj-tag">Deep Learning</span>
-              <span class="proj-tag">BERT</span>
-            </div>
-          </div>
-
-          <!-- 8 -->
-          <div class="proj-card reveal" style="transition-delay:0.42s">
-            <div class="proj-header">
-              <div class="proj-icon" style="background:linear-gradient(135deg,#FFF1F2,#BE123C);">❤️</div>
-            </div>
-            <div class="proj-name">Health Risk Prediction</div>
-            <div class="proj-desc">MS Data Science capstone — predictive modeling pipeline to assess individual health risk factors using real-world clinical datasets.</div>
-            <div class="proj-tags">
-              <span class="proj-tag">ML</span>
-              <span class="proj-tag">Healthcare</span>
-              <span class="proj-tag">Capstone</span>
-            </div>
-          </div>
-
         </div>
-      </div>
-    </section>
 
-    <!-- CONTACT -->
-    <section class="chapter" id="contact" style="background: var(--white);">
-      <div class="chapter-eyebrow">
-        <span class="chapter-num">Let's talk</span>
-        <span class="chapter-line"></span>
-        <span class="chapter-tag">Contact</span>
-      </div>
-      <h2 class="chapter-title reveal">Always open<br/>to a good<br/><em>conversation.</em></h2>
-      <div class="chapter-body reveal" style="transition-delay:0.08s">
-        <p>
-          Whether it's EdTech, learning science, data, or something I haven't thought of yet — reach out. I read every message.
-        </p>
-        <div class="contact-cta">
-          <a href="mailto:info@studywiser.org" class="btn btn-navy">✉ info@studywiser.org</a>
-          <a href="https://studywiser.org" target="_blank" class="btn btn-ghost">Visit StudyWiser →</a>
+        <!-- ERP -->
+        <div class="bc bc-indigo">
+          <div class="bc-header">
+            <div class="bc-icon" style="background:linear-gradient(135deg,#E0E7FF,#3730A3);">⚙️</div>
+          </div>
+          <div class="bc-category">Business</div>
+          <div class="bc-name">ERP Business Management System</div>
+          <div class="bc-desc">Enterprise resource planning system for operations, resource allocation, and reporting.</div>
+          <div class="bc-tags">
+            <span class="bc-tag">ERP</span><span class="bc-tag">Systems</span>
+          </div>
         </div>
+
+        <!-- Customer Intelligence -->
+        <div class="bc bc-green">
+          <div class="bc-header">
+            <div class="bc-icon" style="background:linear-gradient(135deg,#D1FAE5,#065F46);">🔍</div>
+          </div>
+          <div class="bc-category">Data Science</div>
+          <div class="bc-name">Customer Intelligence Platform</div>
+          <div class="bc-desc">Analytics platform for customer behavior, segmentation, and churn prediction.</div>
+          <div class="bc-tags">
+            <span class="bc-tag">Analytics</span><span class="bc-tag">ML</span><span class="bc-tag">Data</span>
+          </div>
+        </div>
+
+        <!-- HuffPost NLP -->
+        <div class="bc bc-orange">
+          <div class="bc-header">
+            <div class="bc-icon" style="background:linear-gradient(135deg,#FEF3C7,#B45309);">📰</div>
+          </div>
+          <div class="bc-category">NLP · Deep Learning</div>
+          <div class="bc-name">HuffPost News Classification</div>
+          <div class="bc-desc">Deep learning model to classify news articles by category using LSTM and BERT.</div>
+          <div class="bc-tags">
+            <span class="bc-tag">NLP</span><span class="bc-tag">BERT</span><span class="bc-tag">Deep Learning</span>
+          </div>
+        </div>
+
+        <!-- Health Risk -->
+        <div class="bc bc-rose">
+          <div class="bc-header">
+            <div class="bc-icon" style="background:linear-gradient(135deg,#FFE4E6,#BE123C);">❤️</div>
+          </div>
+          <div class="bc-category">Data Science · Capstone</div>
+          <div class="bc-name">Health Risk Prediction</div>
+          <div class="bc-desc">MS capstone — predictive modeling to assess individual health risk from clinical datasets.</div>
+          <div class="bc-tags">
+            <span class="bc-tag">ML</span><span class="bc-tag">Healthcare</span><span class="bc-tag">Modeling</span>
+          </div>
+        </div>
+
+        <!-- UX Research -->
+        <div class="bc bc-rose">
+          <div class="bc-header">
+            <div class="bc-icon" style="background:linear-gradient(135deg,#FFE4E6,#9F1239);">🎨</div>
+          </div>
+          <div class="bc-category">UX/UI · Research</div>
+          <div class="bc-name">StudyWiser UX Research & Redesign</div>
+          <div class="bc-desc">End-to-end UX research — user interviews, usability testing, and a full product redesign grounded in behavioral insights.</div>
+          <div class="bc-tags">
+            <span class="bc-tag">UX Research</span><span class="bc-tag">Product</span><span class="bc-tag">Design</span>
+          </div>
+        </div>
+
+        <!-- Portfolio — wide -->
+        <div class="bc bc-wide bc-teal">
+          <div class="bc-header">
+            <div class="bc-icon" style="background:linear-gradient(135deg,#CCFBF1,#0F766E);">💻</div>
+          </div>
+          <div class="bc-category">Web · Design</div>
+          <div class="bc-name">Portfolio Website</div>
+          <div class="bc-desc">This site — designed and built from scratch to tell a story, not just list credentials. Custom HTML, CSS, and vanilla JS with a sidebar layout and scroll animations.</div>
+          <div class="bc-tags">
+            <span class="bc-tag">HTML/CSS</span><span class="bc-tag">JavaScript</span><span class="bc-tag">Design</span>
+          </div>
+        </div>
+
       </div>
-    </section>
+    </div>
+  </section>
 
-  </main>
+  <!-- CONTACT -->
+  <section class="sec" id="contact" style="background:var(--surface);">
+    <div class="sec-inner">
+      <div class="eyebrow">
+        <span class="eyebrow-num">Let's talk</span>
+        <span class="eyebrow-rule"></span>
+        <span class="eyebrow-tag">Contact</span>
+      </div>
+      <h2 class="h-lg reveal">Always open to a<br/><em>good conversation.</em></h2>
+      <div class="body-stack reveal" style="transition-delay:.08s">
+        <p>Whether it's EdTech, data science, learning research, or something I haven't thought of yet — I read every message.</p>
+      </div>
+      <div class="btn-row reveal" style="transition-delay:.15s">
+        <a href="mailto:info@studywiser.org" class="btn btn-primary">✉ info@studywiser.org</a>
+        <a href="https://studywiser.org" target="_blank" class="btn btn-outline">Visit StudyWiser →</a>
+      </div>
+    </div>
+  </section>
 
-  <script>
-    // ── Typewriter ──
-    const phrases = [
-      'Founder & CEO — StudyWiser',
-      'M.S. Data Science, Boston University',
-      'B.A. Psychology, UMass Lowell',
-      'Building EdTech that actually works',
-    ];
-    const el = document.getElementById('typing-text');
-    let pi = 0, ci = 0, del = false;
-    function type() {
-      const cur = phrases[pi];
-      if (!del) {
-        el.textContent = cur.slice(0, ++ci);
-        if (ci === cur.length) { del = true; return setTimeout(type, 2000); }
-      } else {
-        el.textContent = cur.slice(0, --ci);
-        if (ci === 0) { del = false; pi = (pi + 1) % phrases.length; }
-      }
-      setTimeout(type, del ? 35 : 58);
+</main>
+
+<script>
+  // Typewriter
+  const phrases = [
+    'Founder & CEO — StudyWiser',
+    'M.S. Data Science, Boston University',
+    'B.A. Psychology, UMass Lowell',
+    'Building EdTech that actually works',
+  ];
+  const el = document.getElementById('typing-text');
+  let pi = 0, ci = 0, del = false;
+  function type() {
+    const cur = phrases[pi];
+    if (!del) {
+      el.textContent = cur.slice(0, ++ci);
+      if (ci === cur.length) { del = true; return setTimeout(type, 2000); }
+    } else {
+      el.textContent = cur.slice(0, --ci);
+      if (ci === 0) { del = false; pi = (pi + 1) % phrases.length; }
     }
-    setTimeout(type, 500);
+    setTimeout(type, del ? 35 : 58);
+  }
+  setTimeout(type, 500);
 
-    // ── Active nav on scroll ──
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('#sidebar .sidebar-nav a');
-    const observer = new IntersectionObserver(entries => {
+  // Active nav
+  const secs = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('#sidebar .sb-nav a');
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`#sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 }).observe.apply(null, secs);
+
+  // Scroll reveal
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(r => ro.observe(r));
+
+  // Fix observer for sections
+  secs.forEach(s => {
+    new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
-          navLinks.forEach(l => l.classList.remove('active'));
-          const active = document.querySelector(`#sidebar a[href="#${e.target.id}"]`);
-          if (active) active.classList.add('active');
+          links.forEach(l => l.classList.remove('active'));
+          const a = document.querySelector(`#sidebar a[href="#${e.target.id}"]`);
+          if (a) a.classList.add('active');
         }
       });
-    }, { threshold: 0.4 });
-    sections.forEach(s => observer.observe(s));
-
-    // ── Scroll reveal ──
-    const revealObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(r => revealObs.observe(r));
-  </script>
+    }, { threshold: 0.35 }).observe(s);
+  });
+</script>
 </body>
 </html>
